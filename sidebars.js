@@ -18,20 +18,20 @@ module.exports = {
       items: [
         {
           type: "category",
-          label: "Clojure",
-          items: [
-            "getting_started/clojure/pedestal",
-            "getting_started/clojure/ring",
-            "getting_started/clojure/vanilla"
-          ]
-        },
-        {
-          type: "category",
           label: "Java",
           items: [
             "getting_started/java/sparkjava",
             "getting_started/java/springboot",
             "getting_started/java/vanilla"
+          ]
+        },
+        {
+          type: "category",
+          label: "Clojure",
+          items: [
+            "getting_started/clojure/pedestal",
+            "getting_started/clojure/ring",
+            "getting_started/clojure/vanilla"
           ]
         }
       ]
@@ -50,7 +50,7 @@ module.exports = {
             "graphql_schema/relationships/many-to-many"
           ]
         },
-        "graphql_schema/scalar-types"
+        "graphql_schema/custom-scalar-types"
       ]
     },
     {
