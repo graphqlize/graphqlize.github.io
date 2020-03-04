@@ -1,0 +1,122 @@
+---
+id: intro
+title: GraphQL Schema
+sidebar_label: Introduction
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+The crux of GraphQLize is generating the GraphQL types and queries by making use of [JDBC metadata](https://docs.oracle.com/javase/7/docs/api/java/sql/DatabaseMetaData.html). This page documents the conventions and assumptions behind this automatic generation.
+
+## Type name
+
+For every tables and views in the database, GraphQLize generates a GraphQL type. The name of the GraphQL type is the singularized, _PascalCase_ version of the corresponding table or view name.
+
+| Table/View Name | GraphQL Type Name |
+| --------------- | ----------------- |
+| actor           | Actor             |
+| film_actor      | FilmActor         |
+| comments        | Comment           |
+
+GraphQlize supports Postgres [schema](https://www.postgresql.org/docs/current/ddl-schemas.html). If the schema in question is not default schema (`public`), then it will be used as a prefix in the GraphQL type name.
+
+| Schema Name     | Table/View Name | GraphQL Type Name      |
+| --------------- | --------------- | ---------------------- |
+| person          | state_province  | PersonStateProvince    |
+| human_resources | employee        | HumanResourcesEmployee |
+
+:::note
+Only table name is singularized and not the schema name.
+:::
+
+## Field name
+
+The Field names of a generated GraphQL Type represent the column names of the corresponding database table. GraphQLize generates the field name by converting the column name to its _camelCase_ version.
+
+For a table like below,
+
+<Tabs
+  defaultValue="postgres"
+  values={[
+    { label: 'Postgres', value: 'postgres' },
+    { label: 'MySQL', value: 'mysql' }
+  ]
+}>
+<TabItem value="postgres">
+
+```sql
+CREATE TABLE actor (
+  actor_id SERIAL PRIMARY KEY,
+  first_name character varying(45) NOT NULL,
+  last_name character varying(45) NOT NULL
+);
+```
+
+</TabItem>
+<TabItem value="mysql">
+
+```sql
+CREATE TABLE actor (
+  actor_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  first_name VARCHAR(45) NOT NULL,
+  last_name VARCHAR(45) NOT NULL,
+  PRIMARY KEY  (actor_id)
+)
+```
+
+</TabItem>
+
+</Tabs>
+
+GraphQLize generates a GraphQL type as 
+
+```graphql
+type Actor {
+  actorId: Int!
+  firstName: String!
+  lastName: String!
+}
+```
+
+## Field type
+
+GraphQLize supports the [standard GraphQL scalar types](https://graphql.org/learn/schema/#scalar-types) and [some custom scalar types](./custom_scalar_types.md).
+
+During the schema generation, GraphQLize checks the column's database type and convert it to a GraphQL scalar type. Refer the table below for the type conversion mapping.
+
+
+<Tabs
+  defaultValue="postgres"
+  values={[
+    { label: 'Postgres', value: 'postgres' },
+    { label: 'MySQL', value: 'mysql' }
+  ]
+}>
+<TabItem value="postgres">
+
+| GraphQL Scalar Type | Data Type(s) |
+| ------------------- | --------- |
+| `Int` | `integer`, `int`, `int2`  `int4`, `bigint`, `int8`, `bigserial`, `serial8`, `smallint`, `smallserial`, `serial`, `serial2`, `serial4`|
+| `Float` | `real`, `float4`, `float8`, `double precision`, `money`, `numeric`|
+| `String` | `bit`, `bit varying`, `char`, `character varying`, `varchar`, `citext`, `bpchar`, `macaddr8`, `text`  |
+| `Boolean` | `boolean`, `bool` |
+| `UUID` | `uuid` |
+
+</TabItem>
+<TabItem value="mysql">
+
+| GraphQL Scalar Type | Data Type(s) |
+| --------------- | ----------------- |
+| `Int` |  |
+| `Float` |  |
+| `String` |   |
+| `Boolean` |  |
+
+</TabItem>
+
+</Tabs>
+
+:::note
+GraphQLize assumes `String` as a default data type for the field if the corresponding column database type is not mentioned in the above table.
+:::

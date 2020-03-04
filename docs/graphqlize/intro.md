@@ -6,7 +6,9 @@ sidebar_label: Introduction
 
 ## What is GraphQLize?
 
-GraphQLize is a JVM library for developing GraphQL API from your existing PostgreSQL and MySQL databases. It aims to simplify the effort required to expose GraphQL APIs over relational databases with a developer-centric approach. It is written in Clojure with Java interoperability.
+GraphQLize is a JVM library for developing GraphQL API from your existing PostgreSQL and MySQL databases. It aims to simplify the effort required to expose GraphQL APIs over relational databases.
+
+It is written in Clojure with Java interoperability.
 
 ## Getting Started
 
