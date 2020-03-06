@@ -108,15 +108,16 @@ During the schema generation, GraphQLize checks the column's database type and c
 
 | GraphQL Scalar Type | Data Type(s) |
 | --------------- | ----------------- |
-| `Int` |  |
-| `Float` |  |
-| `String` |   |
-| `Boolean` |  |
+| `Int` | `SMALLINT`, `MEDIUMINT`, `INT`, `TINYINT UNSIGNED`, `SMALLINT UNSIGNED`, `MEDIUMINT UNSIGNED`, `INT UNSIGNED,` `BIGINT`, `YEAR` |
+| `Float` | `DECIMAL`, `NUMERIC`, `REAL`, `FLOAT`, `DOUBLE` |
+| `String` | `CHAR`, `VARCHAR`, `TINYTEXT`, `TEXT`, `MEDIUMTEXT`, `LONGTEXT`, `ENUM`, `SET`, `BINARY`, `VARBINARY`, `TINYBLOB,` `BLOB`, `LONGBLOB`, `BIT` |
+| `Boolean` | [Yet to support](https://github.com/graphqlize/graphqlize/issues/10) |
+| `UUID` | [Yet to support](https://github.com/graphqlize/graphqlize/issues/11) |
 
 </TabItem>
 
 </Tabs>
 
 :::note
-GraphQLize assumes `String` as a default data type for the field if the corresponding column database type is not mentioned in the above table.
+GraphQLize assumes `String` as a default GraphQL scalar data type for the field if the corresponding column database type is not mentioned in the above table.
 :::

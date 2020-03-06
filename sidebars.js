@@ -41,15 +41,7 @@ module.exports = {
       label: "GraphQL Schema",
       items: [
         "graphql_schema/intro",
-        {
-          type: "category",
-          label: "Relationships",
-          items: [
-            "graphql_schema/relationships/one-to-one",
-            "graphql_schema/relationships/one-to-many",
-            "graphql_schema/relationships/many-to-many"
-          ]
-        },
+        "graphql_schema/relationships",
         "graphql_schema/custom-scalar-types"
       ]
     },

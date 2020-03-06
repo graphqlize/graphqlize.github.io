@@ -1,0 +1,49 @@
+---
+id: relationships
+title: Relationships
+sidebar_label: Relationships
+---
+
+GraphQLize identifies the relationships between database tables using their foreign keys, and generate appropriate relationship fields (conections) in the resulting GraphQL schema.
+
+## One to One
+
+![](/img/address_city_country_er_diagram.png)
+
+For the database table relationships like above, GraphQLize infers two `one-to-one` relationships.
+
+- A `address` is associated with a `city` via `city_id` column in the `address` table.
+
+- A `city` is associated with a `country` via `country_id` column in the `city` table.
+
+GraphQLize then create two object relationsips in the `Address` and the `City` type respectively
+
+```graphql
+type Address {
+  # ...
+  city: City!
+}
+
+type City {
+  # ...
+  country: Country!
+}
+```
+
+The generated field name is the _camelCase_ version of the corresponding column name with the id suffix `_id` removed.
+
+Here are some of the examples.
+
+| Column Name            | GraphQL Field Name |
+| ---------------------- | ------------------ |
+| actor_id               | actor              |
+| original_language_id   | originalLanguage   |
+| reports_to_employee_id | reportsToEmployee  |
+
+By default, GraphQLize assumes `_id` as the suffix for foriegn keys in both Postgres and MySQL.
+
+[In future](https://github.com/graphqlize/graphqlize/issues/4), GraphQLize will provide a configuration to override this default behaviour.
+
+## One to Many
+
+## Many to Many
