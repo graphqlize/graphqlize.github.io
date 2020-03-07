@@ -40,7 +40,7 @@ module.exports = {
       type: "category",
       label: "GraphQL Schema",
       items: [
-        "graphql_schema/intro",
+        "graphql_schema/types-and-fields",
         "graphql_schema/relationships",
         "graphql_schema/custom-scalar-types"
       ]

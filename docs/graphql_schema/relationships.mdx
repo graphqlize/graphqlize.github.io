@@ -4,6 +4,9 @@ title: Relationships
 sidebar_label: Relationships
 ---
 
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
 GraphQLize identifies the relationships between database tables using their foreign keys, and generate appropriate relationship fields (conections) in the resulting GraphQL schema.
 
 ## One to One
@@ -46,4 +49,124 @@ By default, GraphQLize assumes `_id` as the suffix for foriegn keys in both Post
 
 ## One to Many
 
+![](/img/address_city_country_er_diagram.png)
+
+For the database table relationships like above, GraphQLize infers two `one-to-many` relationships.
+
+- A `city` has many `address` via `city_id` column in the `address` table.
+
+- A `country` has many `city` via `country_id` column in the `city` table.
+
+GraphQLize then create two array relationsips in the `City` and the `Country` type respectively
+
+```graphql
+type City {
+  # ...
+  addresses: [Address]!
+}
+
+type Country {
+  # ...
+  cities: [City]!
+}
+```
+
+The generated field name is the _camelCase_ version of the corresponding target table's pluralized name.
+
+If a table has multiple foreign keys to a same table like below,
+
+<Tabs
+  defaultValue="postgres"
+  values={[
+    { label: 'Postgres', value: 'postgres' },
+    { label: 'MySQL', value: 'mysql' }
+  ]
+}>
+<TabItem value="postgres">
+
+```sql
+CREATE TABLE language (
+  language_id serial PRIMARY KEY,
+  name character(20) NOT NULL
+);
+
+CREATE TABLE film (
+  film_id serial PRIMARY KEY,
+  title character varying(255) NOT NULL,
+
+  language_id smallint NOT NULL REFERENCES language(language_id),
+  original_language_id smallint REFERENCES language(language_id)
+);
+
+```
+
+</TabItem>
+<TabItem value="mysql">
+
+```sql
+CREATE TABLE language (
+  language_id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  name CHAR(20) NOT NULL,
+  PRIMARY KEY (language_id)
+);
+
+CREATE TABLE film (
+  film_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  title VARCHAR(255) NOT NULL,
+  language_id TINYINT UNSIGNED NOT NULL,
+  original_language_id TINYINT UNSIGNED DEFAULT NULL,
+  PRIMARY KEY  (film_id),
+  CONSTRAINT fk_film_language FOREIGN KEY (language_id) REFERENCES language (language_id),
+  CONSTRAINT fk_film_language_original FOREIGN KEY (original_language_id) REFERENCES language (language_id)
+);
+```
+
+</TabItem>
+
+</Tabs>
+
+GraphQLize creates two `one-to-many` relationships between `language` and `films`. 
+
+* The `language` has many `film` via `language_id` column in the `film` table. 
+* The `language` has many `film` via `original_language_id` column in the `film` table.
+
+```graphql
+type Language {
+  languageId: Int!
+  name: String!
+
+  films: [Film]!
+  originalLanguageFilms: [Film]!
+}
+```
+
+The nomanclature used here to generate the field name follows the below logic.
+
+If the foreign key suffix removed column name (`language`) matches the target table name, then
+```
+field-name = pluralize(target-table-name)
+```
+
+If it didn't match (like `original_language`), then 
+
+```
+field-name = camel-case (suffix-removed-column-name + pluralize(target-table-name))
+```
+
 ## Many to Many
+
+The `many-to-many` relationship is bit tricky to figure out. For the database table relationships like below,
+
+![](/img/film_actor_er_diagram.png)
+
+GraphQLize traverse each table's metadata to figure out whether it is a [associative table](https://en.wikipedia.org/wiki/Associative_entity) or not. 
+
+A table is considered as a associative table, if it statisfies the following two criteria
+
+1. It should a have primay key with two column names.
+2. These column names should be a subset of the foriegn key column names present in that table. 
+
+In the example provided, `film_actor` table is a associative table. It has
+
+1. It has `actor_id` and `film_id` as primary key.
+2. The primay keys `{actor_id, film_id}` is a subset of foreign keys `{actor_id, film_id}` of the `film_actor` table. 
