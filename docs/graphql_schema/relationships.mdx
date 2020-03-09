@@ -142,16 +142,9 @@ type Language {
 
 The nomanclature used here to generate the field name follows the below logic.
 
-If the foreign key suffix removed column name (`language`) matches the target table name, then
-```
-field-name = pluralize(target-table-name)
-```
+If the column name (`language_id`) after the removal of foreign key suffix (`language`) matches the target table name, then the resulting field name is the *camelCase* version of pluralized form of the target table (`languages`).
 
-If it didn't match (like `original_language`), then 
-
-```
-field-name = camel-case (suffix-removed-column-name + pluralize(target-table-name))
-```
+If the column name (`original_language_id`) didn't match (like `original_language`), then GraphQLize removes the foreign key suffix and concatenate with the pluralized form of the target table and then convert it to its *camelCase* version.
 
 ## Many to Many
 
@@ -161,7 +154,7 @@ The `many-to-many` relationship is bit tricky to figure out. For the database ta
 
 GraphQLize traverse each table's metadata to figure out whether it is a [associative table](https://en.wikipedia.org/wiki/Associative_entity) or not. 
 
-A table is considered as a associative table, if it statisfies the following two criteria
+A table is considered as a associative table, if it satisfies the following two criteria
 
 1. It should a have primay key with two column names.
 2. These column names should be a subset of the foriegn key column names present in that table. 
@@ -170,3 +163,36 @@ In the example provided, `film_actor` table is a associative table. It has
 
 1. It has `actor_id` and `film_id` as primary key.
 2. The primay keys `{actor_id, film_id}` is a subset of foreign keys `{actor_id, film_id}` of the `film_actor` table. 
+
+In this scenario, GraphQLize creates two array fields for these two `many-to-many` relationships.  
+
+```graphql
+type Film {
+  actors: [Actor]!
+  # ...
+}
+type Actor {
+  films: [Film]!
+  # ...
+}
+```
+
+For the relationships between `film` & `film_actor` and `film_actor` & `actor` tables, GraphQLize creates the following fields. 
+
+```graphql
+type Film {
+  # ...
+  filmActors: [FilmActor]!
+}
+
+type FilmActor {
+  actor: Actor!
+  film: Film!
+  # ...
+}
+
+type Actor {
+  # ...
+  filmActors: [FilmActor]!
+}
+```

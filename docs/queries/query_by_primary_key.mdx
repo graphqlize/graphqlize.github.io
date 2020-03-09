@@ -1,0 +1,108 @@
+---
+id: query-by-primary-key
+title: Querying a table by its primary key
+sidebar_label: Query Table By Primary Key(s)
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+For every table that has primary key(s), GraphQLize generates a corresponding GraphQL query to enable querying the table by its primary keys.
+
+For a table like below,
+
+<Tabs
+defaultValue="postgres"
+values={[
+{ label: 'Postgres', value: 'postgres' },
+{ label: 'MySQL', value: 'mysql' }
+]
+}>
+<TabItem value="postgres">
+
+```sql
+CREATE TABLE actor (
+  actor_id SERIAL PRIMARY KEY,
+  first_name character varying(45) NOT NULL,
+  last_name character varying(45) NOT NULL
+);
+```
+
+</TabItem>
+<TabItem value="mysql">
+
+```sql
+CREATE TABLE actor (
+  actor_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  first_name VARCHAR(45) NOT NULL,
+  last_name VARCHAR(45) NOT NULL,
+  PRIMARY KEY  (actor_id)
+)
+```
+
+</TabItem>
+
+</Tabs>
+
+GraphQLize generates the following query
+
+```graphql
+type QueryRoot {
+  actorByActorId(actorId: Int!): Actor
+  # ...
+}
+
+schema {
+  query: QueryRoot
+}
+```
+
+The query name `actorByActorId` is created using the following convention. 
+
+`{camel-case(table-name)}`*By*`{pascal-case(primary-key-column-name)}`
+
+If a table has multiple primary keys like below
+
+<Tabs
+defaultValue="postgres"
+values={[
+{ label: 'Postgres', value: 'postgres' },
+{ label: 'MySQL', value: 'mysql' }
+]
+}>
+<TabItem value="postgres">
+
+```sql
+CREATE TABLE film_actor (
+  actor_id smallint REFERENCES actor(actor_id),
+  film_id smallint REFERENCES film(film_id)
+  CONSTRAINT film_actor_pkey PRIMARY KEY (actor_id, film_id)
+);
+```
+
+</TabItem>
+<TabItem value="mysql">
+
+```sql
+CREATE TABLE film_actor (
+  actor_id SMALLINT UNSIGNED NOT NULL,
+  film_id SMALLINT UNSIGNED NOT NULL,
+  PRIMARY KEY (actor_id,film_id)
+);
+```
+
+</TabItem>
+
+</Tabs>
+
+
+GraphQLize generates the following query
+
+```graphql
+type QueryRoot {
+  filmActorByActorIdAndFilmId(actorId: Int!, filmId: Int!): FilmActor 
+  # ...
+}
+```
+
+The convention followed for generating the query name is same as above except that primary key columns are sorted by their names and concatenated with `And`. 
