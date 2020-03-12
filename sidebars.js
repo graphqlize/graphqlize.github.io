@@ -20,8 +20,8 @@ module.exports = {
           type: "category",
           label: "Java",
           items: [
-            "getting_started/java/sparkjava",
             "getting_started/java/springboot",
+            "getting_started/java/sparkjava",
             "getting_started/java/vanilla"
           ]
         },
@@ -50,7 +50,7 @@ module.exports = {
       label: "Queries",
       items: [
         "queries/query-by-primary-key",
-        "queries/query-table",
+        "queries/query-table-and-view",
         "queries/query-relationships"
       ]
     }

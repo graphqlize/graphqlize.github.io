@@ -1,0 +1,63 @@
+---
+id: query-table-and-view
+title: Querying Tables & Views
+sidebar_label: Query Tables & Views
+---
+
+GraphQLize generetes GraphQL query types for all the tables and the views by default.
+
+For a table and a view like below,
+
+```sql
+CREATE TABLE actor (
+-- ...
+);
+
+CREATE VIEW customer_list
+AS
+-- ...
+```
+
+GraphQLize generates the following queryies
+
+```graphql
+type QueryRoot {
+  actors: [Actor]!
+  customerLists: [CustomerList]!
+  # ...
+}
+
+schema {
+  query: QueryRoot
+}
+```
+
+The query name generation follows the below convention.
+
+`camel-case(pluralize(table-or-view-name))`
+
+## Sample Queries
+
+```graphql
+query {
+  # Table Name: `actor`
+  actors {
+    # Column Name: `first_name`
+    firstName
+    # Column Name: `last_name`
+    lastName
+  }
+}
+```
+
+```graphql
+query {
+  # View Name: `customer_list`
+  customerLists {
+    # Column Name: `name`
+    name
+    # Column Name: `zip code`
+    zipCode
+  }
+}
+```

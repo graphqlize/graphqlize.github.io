@@ -1,3 +1,18 @@
+const Prism = require("prism-react-renderer/prism");
+
+// Prism.hooks.add("wrap", function(env) {
+//   if (env.language == "clojure" && env.type == "punctuation") {
+//     if (env.content == "(" || env.content == "[" || env.content == "{") {
+//       level++;
+//       env.classes.push("rbl" + level);
+//     }
+//     if (env.content == ")" || env.content == "]" || env.content == "}") {
+//       env.classes.push("rbl" + level);
+//       level--;
+//     }
+//   }
+// });
+
 module.exports = {
   title: "GraphQLize",
   tagline:
@@ -8,6 +23,10 @@ module.exports = {
   organizationName: "graphqlize", // Usually your GitHub org/user name.
   projectName: "graphqlize.github.io", // Usually your repo name.
   themeConfig: {
+    prism: {
+      additionalLanguages: ["clojure"],
+      theme: require("prism-react-renderer/themes/github")
+    },
     navbar: {
       title: "GraphQLize",
       logo: {

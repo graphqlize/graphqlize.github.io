@@ -14,8 +14,8 @@ It is written in Clojure with Java interoperability.
 
 Getting started with GraphQLize is simple and involves only few steps.
 
-1. Add the GraphQLize dependency in your (exisitng) project.
-2. Initialize GraphQLize Resolver by providing the [datasource](https://docs.oracle.com/javase/7/docs/api/javax/sql/DataSource.html).
+1. Add the GraphQLize dependency in your project.
+2. Initialize GraphQLize Resolver by providing the Java SQL [datasource](https://docs.oracle.com/javase/7/docs/api/javax/sql/DataSource.html).
 3. Add a GraphQL API endpoint and use the initialized GraphQlize Resolver in the previous step.
 
 The actual implementation of these steps will vary based on which language (Java, Clojure) and framework (Spring Boot, Spark Java, Pedestal, etc.,). Please refer the below links for more details.

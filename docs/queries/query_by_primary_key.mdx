@@ -1,7 +1,7 @@
 ---
 id: query-by-primary-key
-title: Querying a table by its primary key
-sidebar_label: Query Table By Primary Key(s)
+title: Querying tables by its primary key
+sidebar_label: Query Tables By Primary Key(s)
 ---
 
 import Tabs from "@theme/Tabs";
@@ -106,3 +106,51 @@ type QueryRoot {
 ```
 
 The convention followed for generating the query name is same as above except that primary key columns are sorted by their names and concatenated with `And`. 
+
+## Sample Queries
+
+```graphql
+# Table Name: employee 
+# Primary Key Column Name: id
+
+query {
+  employeeById(id: 1) {
+    # Column Name: `first_name`
+    firstName
+    # Column Name: `last_name`
+    lastName
+    # Column Name: `employee_reports_to_id`
+    employeeReportsToId
+  }
+}
+```
+
+```graphql
+
+# Table Name: `country` 
+# Primary Key Column Name: `country_id`
+
+query {
+  countryByCountryId(countryId: 1) {
+    # Column Name: `country`
+    country
+  }
+}
+```
+
+```graphql
+# Query by UUID primary key is also supported.
+# Limited to Postgres alone.
+
+# Table Name: `customer` 
+# Primary Key Column Name: `id` (of type `UUID`)
+
+query {
+  customerById(id: "847f09a7-39d1-4021-b43d-18ceb7ada8f6") {
+    # Column Name: `id`
+    id
+    # Column Name: `first_name`
+    firstName
+  }
+}
+```
