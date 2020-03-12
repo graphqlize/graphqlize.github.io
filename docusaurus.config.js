@@ -17,7 +17,7 @@ module.exports = {
   title: "GraphQLize",
   tagline:
     "A JVM library for developing GraphQL API from your existing PostgreSQL and MySQL databases",
-  url: "https://graphqlize.github.io",
+  url: "https://www.graphqlize.org",
   baseUrl: "/",
   favicon: "img/favicon.ico",
   organizationName: "graphqlize", // Usually your GitHub org/user name.
@@ -100,6 +100,12 @@ module.exports = {
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css")
+        },
+        blog: {
+          feedOptions: {
+            type: "all",
+            copyright: `Copyright © ${new Date().getFullYear()} GraphQLize.`
+          }
         }
       }
     ]
