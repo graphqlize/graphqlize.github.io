@@ -6,6 +6,7 @@ author_title: Author, GraphQLize
 author_url: https://github.com/tamizhvendan
 author_image_url: https://avatars1.githubusercontent.com/u/1128916?v=4
 tags: [announcement, clojure, java, graphql, postgres, mysql]
+draft: true
 ---
 
 Hello World,

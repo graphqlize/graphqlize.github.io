@@ -87,6 +87,9 @@ module.exports = {
         }
       ],
       copyright: `Copyright © ${new Date().getFullYear()} GraphQLize. Built with Docusaurus.`
+    },
+    googleAnalytics: {
+      trackingID: "UA-160648124-1"
     }
   },
   presets: [
