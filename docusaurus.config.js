@@ -24,8 +24,8 @@ module.exports = {
   projectName: "graphqlize.github.io", // Usually your repo name.
   themeConfig: {
     prism: {
-      additionalLanguages: ["clojure"],
-      theme: require("prism-react-renderer/themes/github")
+      additionalLanguages: ["clojure", "groovy"]
+      // theme: require("prism-react-renderer/themes/github")
     },
     navbar: {
       title: "GraphQLize",

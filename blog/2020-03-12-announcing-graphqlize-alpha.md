@@ -1,4 +1,5 @@
 ---
+draft: true
 id: announcing-graphqlize-alpha
 title: Announcing GraphQLize Alpha
 author: Tamizhvendan S
@@ -6,7 +7,6 @@ author_title: Author, GraphQLize
 author_url: https://github.com/tamizhvendan
 author_image_url: https://avatars1.githubusercontent.com/u/1128916?v=4
 tags: [announcement, clojure, java, graphql, postgres, mysql]
-draft: true
 ---
 
 Hello World,
@@ -72,4 +72,19 @@ So, at this point the best way to contribute is to raise a GitHub issue with all
 
 ## Oracle & SQL Server Support
 
-I have been working on this idea for close to an year now. The grand vision of GraphQLize is to support a
+One of the design goal of GraphQLize from day one is to support Postgres, MySQL, Oracle & MS Sql Server. To start with, I am focussing on getting it work and right for Postgres & MySQL. After accomplishing this, I will be focusing on the other two.
+
+## Acknowledgements
+
+GraphQLize is inspired by [PostgREST](http://postgrest.org), [PostGraphile](https://www.graphile.org/postgraphile/), [KeyStoneJs](https://www.keystonejs.com/) and [Hasura](https://hasura.io/).
+
+GraphQLize is not possible without the following awesome Clojure libraries.
+
+- [HoneySQL](https://github.com/jkk/honeysql)
+- [Lacinia](https://github.com/walmartlabs/lacinia)
+- [next-jdbc](https://github.com/seancorfield/next-jdbc)
+- [inflections](https://github.com/r0man/inflections-clj)
+- [data-json](https://github.com/clojure/data.json)
+
+Cheers!
+Stay tuned!!

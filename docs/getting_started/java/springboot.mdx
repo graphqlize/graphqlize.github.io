@@ -1,0 +1,104 @@
+---
+id: springboot
+title: Spring Boot
+sidebar_label: Spring Boot
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Getting started with GraphQLize in Spring-Boot is simple and straight forward.
+
+As we typically do, let's go to [Spring Initializr](https://start.spring.io/) and create a Java project with Web & JPA as dependencies. This documentation uses this [Spring Initializr](https://start.spring.io/#!type=gradle-project&language=java&platformVersion=2.2.5.RELEASE&packaging=jar&jvmVersion=1.8&groupId=org.graphqlize.java&artifactId=spring-boot&name=spring-boot&description=Demo%20project%20for%20Spring%20Boot%20and%20GraphQLize&packageName=org.graphqlize.java.spring-boot&dependencies=web,data-jpa) template.
+
+## Adding Dependencies
+
+The first step is to add the `graphqlize-java` & the jdbc driver dependencies.
+
+```groovy {3,6,9}
+// ...
+dependencies {
+  implementation 'org.graphqlize:graphqlize-java:0.1.0-alpha4'
+
+  // For Postgres
+  implementation 'org.postgresql:postgresql:42.2.10'
+
+  // For MySQL
+  implementation 'mysql:mysql-connector-java:8.0.19'
+
+  // ...
+}
+```
+
+## Initializing GraphQLizeResolver
+
+The next step is initializing `GraphQLizeResolver`. To do it, let's a create new file _GraphQLizeResolverProvider.java_ and add the following code.
+
+```java {9,16,19-22}
+package org.graphqlize.java.springboot;
+
+import org.graphqlize.java.GraphQLizeResolver;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+
+import javax.sql.DataSource;
+
+@Component
+public class GraphQLizeResolverProvider {
+  private final DataSource dataSource;
+  private final GraphQLizeResolver graphQLizeResolver;
+
+  public GraphQLizeResolverProvider(DataSource dataSource) {
+    this.dataSource = dataSource;
+    graphQLizeResolver = new GraphQLizeResolver(dataSource);
+  }
+
+  @Bean
+  public GraphQLizeResolver graphQLizeResolver() {
+    return this.graphQLizeResolver;
+  }
+}
+```
+
+During initialization (via `constructor`), the `GraphQLizeResolver` reads the metadata of the database using the JDBC metadata APIs and keeps an in-memory representation of them.
+
+:::note
+Currently, it takes around 8 to 12 seconds to initialize. I am planning to [reduce](https://github.com/graphqlize/graphqlize/issues/48) it in a feature release.
+:::
+
+### Configuring DataSource
+
+To configure the `DataSource`, let's add the following properties in the _application.properties_ file
+
+<Tabs
+  defaultValue="postgres"
+  values={[
+    { label: 'Postgres', value: 'postgres' },
+    { label: 'MySQL', value: 'mysql' }
+  ]
+}>
+<TabItem value="postgres">
+
+```
+spring.datasource.url=jdbc:postgresql://localhost:5432/sakila
+spring.datasource.username=postgres
+spring.datasource.password=postgres
+```
+
+</TabItem>
+<TabItem value="mysql">
+
+```
+spring.datasource.url=jdbc:mysql://localhost:3306/sakila
+spring.datasource.username=root
+spring.datasource.password=mysql123
+```
+
+</TabItem>
+</Tabs>
+
+:::note
+Make sure you are changing the above values to refer your database credentails. The above example assumes that you are using the _sakila_ database which can be created using the scripts from this [JOOQ's example repository](https://github.com/jOOQ/jOOQ/tree/master/jOOQ-examples/Sakila).  
+:::
+
+## Adding GraphQL Endpoint
