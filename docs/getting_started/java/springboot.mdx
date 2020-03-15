@@ -9,14 +9,21 @@ import TabItem from "@theme/TabItem";
 
 Getting started with GraphQLize in Spring-Boot is simple and straight forward.
 
-As we typically do, let's go to [Spring Initializr](https://start.spring.io/) and create a Java project with Web & JPA as dependencies. This documentation uses this [Spring Initializr](https://start.spring.io/#!type=gradle-project&language=java&platformVersion=2.2.5.RELEASE&packaging=jar&jvmVersion=1.8&groupId=org.graphqlize.java&artifactId=spring-boot&name=spring-boot&description=Demo%20project%20for%20Spring%20Boot%20and%20GraphQLize&packageName=org.graphqlize.java.spring-boot&dependencies=web,data-jpa) template.
+As we typically do, let's go to [Spring Initializr](https://start.spring.io/) and create a Java project with Web & JPA as dependencies. This documentation uses this [Spring Initializr template](https://start.spring.io/#!type=gradle-project&language=java&platformVersion=2.2.5.RELEASE&packaging=jar&jvmVersion=1.8&groupId=org.graphqlize.java&artifactId=spring-boot&name=spring-boot&description=Demo%20project%20for%20Spring%20Boot%20and%20GraphQLize&packageName=org.graphqlize.java.spring-boot&dependencies=web,data-jpa).
 
 ## Adding Dependencies
 
 The first step is to add the `graphqlize-java` & the jdbc driver dependencies.
 
-```groovy {3,6,9}
+[![Clojars Project](https://img.shields.io/clojars/v/org.graphqlize/graphqlize-java.svg)](https://clojars.org/org.graphqlize/graphqlize-java)
+
+```groovy {4,8}
 // ...
+repositories {
+	// ...
+	maven { url "https://clojars.org/repo" }
+}
+
 dependencies {
   implementation 'org.graphqlize:graphqlize-java:0.1.0-alpha4'
 
@@ -165,5 +172,35 @@ To a test drive of this implementation, start the server and hit the endpoint vi
 
 You'll get a response like below
 ```json
-{"data":{"actorByActorId":{"firstName":"PENELOPE"}}}
+{
+  "data": {
+    "actorByActorId": {
+      "firstName": "PENELOPE"
+    }
+  }
+}
 ```
+
+## GraphQL Playground and Voyager
+
+With the GraphQL endpoint up and running, the next step is introspecting and try out some more queries. 
+
+To introspect, we are going to make use of [Voyager](https://github.com/APIs-guru/graphql-voyager), a tool to visualize GraphQL API as an interactive graph. Adding it to our project is easy thanks to [static content serve capability](https://spring.io/blog/2013/12/19/serving-static-web-content-with-spring-boot) of Spring Boot. 
+
+All you need to do is download this [voyager html](https://github.com/graphqlize/graphqlize-demo/blob/master/java/spring-boot/src/main/resources/static/voyager.html) file and put it under the _src/main/resources/static_ directory. 
+
+When you restart the server, the voyager will be available at _http://localhost:8080/voyager.html_. A sample output would look like [this](https://www.graphqlize.org/html/sakila-voyager.html).
+
+Then to interact with the GraphQL API, let's add the [GraphQL Playground](https://github.com/prisma-labs/graphql-playground). Like Voyager, download this [playground html](https://github.com/graphqlize/graphqlize-demo/blob/master/java/spring-boot/src/main/resources/static/playground.html) file and put in the _static_ directory. 
+
+This GraphQL playground will be available at _http://localhost:8080/playground.html_ after server restart. 
+
+![](/img/graphql-playground.png)
+
+## Next Steps
+
+Congrats! You are on course to build awesome applications in GraphQLize in less time. To save yourself some more time, do refer [this documentation](../../graphql_schema/types-and-fields) to know more about how GraphQLize generates the GraphQL schema. 
+
+:::note
+You can also customize certain default behaviors of GraphQLize in future releases.
+:::
