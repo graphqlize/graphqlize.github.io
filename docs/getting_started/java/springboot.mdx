@@ -63,7 +63,7 @@ public class GraphQLizeResolverProvider {
 During initialization (via `constructor`), the `GraphQLizeResolver` reads the metadata of the database using the JDBC metadata APIs and keeps an in-memory representation of them.
 
 :::note
-Currently, it takes around 8 to 12 seconds to initialize. I am planning to [reduce](https://github.com/graphqlize/graphqlize/issues/48) it in a feature release.
+Currently, it takes around 8 to 12 seconds to initialize. I am planning to [work on it](https://github.com/graphqlize/graphqlize/issues/48) it in a future release.
 :::
 
 ### Configuring DataSource
@@ -98,7 +98,72 @@ spring.datasource.password=mysql123
 </Tabs>
 
 :::note
-Make sure you are changing the above values to refer your database credentails. The above example assumes that you are using the _sakila_ database which can be created using the scripts from this [JOOQ's example repository](https://github.com/jOOQ/jOOQ/tree/master/jOOQ-examples/Sakila).  
+Make sure you are changing the above values to refer your database connection. The above example assumes that you are using the _sakila_ database which can be created using the scripts from this [JOOQ's example repository](https://github.com/jOOQ/jOOQ/tree/master/jOOQ-examples/Sakila).  
 :::
 
 ## Adding GraphQL Endpoint
+
+The final step is exposing an API endpoint for handling the GraphQL request. To do it, let's create a new file _GraphQLController.java_ and do the following 
+
+* Create a POJO `GraphQLRequest` for deserializing GraphQL request from the client.
+* Create a Controller class with a `GraphQLResolver` dependency. 
+* Create a method inside this classs to handle the GraphQL request. 
+
+```java {25-28}
+package org.graphqlize.java.springboot;
+
+import org.graphqlize.java.GraphQLResolver;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+import java.util.Map;
+
+class GraphQLRequest {
+  private String query;
+  private Map<String, Object> variables;
+
+  // ... Getters & Setters are ignored for brevity
+}
+
+@RestController
+public class GraphQLController {
+  private final GraphQLResolver graphQLResolver;
+
+  public GraphQLController(GraphQLResolver graphQLResolver) {
+    this.graphQLResolver = graphQLResolver;
+  }
+
+  @PostMapping("/graphql")
+  public ResponseEntity handle(@RequestBody GraphQLRequest graphQLRequest) {
+    String result = 
+      graphQLResolver.resolve(
+        graphQLRequest.getQuery(), 
+        graphQLRequest.getVariables());
+
+    return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_TYPE, "application/json")
+            .body(result);
+  }
+}
+```
+
+Handling the GraphQL request is simple as highlighted above. 
+
+All we need to do is to get the query & the variables from the request and invoke the `resolve` method on the initialized instance of `GraphQLizeResolver`. 
+
+It return the `result` as stringified JSON and it can be sent as response body with the content type as `application/json`. 
+
+### Test Drive
+
+To a test drive of this implementation, start the server and hit the endpoint via curl.
+
+```bash
+> curl -X POST \
+  --data '{"query": "query { actorByActorId(actorId: 1){firstName}}"}' \
+  -H "Content-Type: application/json" \
+  http://localhost:8080/graphql
+```
+
+You'll get a response like below
+```json
+{"data":{"actorByActorId":{"firstName":"PENELOPE"}}}
+```
