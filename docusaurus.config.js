@@ -90,6 +90,11 @@ module.exports = {
     },
     googleAnalytics: {
       trackingID: "UA-160648124-1"
+    },
+    algolia: {
+      apiKey: "fdc14b876f472241da9c719eb6f80573",
+      indexName: "graphqlize",
+      algoliaOptions: {} // Optional, if provided by Algolia
     }
   },
   presets: [
