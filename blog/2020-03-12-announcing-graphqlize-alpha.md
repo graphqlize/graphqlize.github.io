@@ -62,7 +62,7 @@ You can keep track of the progress by
 
 - Following the [GitHub project board](https://github.com/orgs/graphqlize/projects/1)
 - Subscribing to [GraphQLize's newsletter]().
-- Joining [GraphQLize's Discord]().
+- Joining [GraphQLize's Discord](https://discord.gg/akkdPqf).
 
 ## How can I contribute?
 
