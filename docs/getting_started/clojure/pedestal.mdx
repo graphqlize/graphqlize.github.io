@@ -37,7 +37,7 @@ Create a new Clojure project using [deps](https://github.com/seancorfield/clj-ne
 The next step is configuring the [DataSource](https://docs.oracle.com/javase/7/docs/api/javax/sql/DataSource.html). In this example, we are going to use [Hikari Connection Pool](https://github.com/brettwooldridge/HikariCP) to manage the database connection.
 
 :::note
-To keep things simple, this sample uses `def` to define the states. In a real-word project, you can replace it with [Component](https://github.com/stuartsierra/component), [Mount](https://github.com/tolitius/mount), or [Integrant](https://github.com/weavejester/integrant).
+For brevity, this sample uses `def` to define the states. In a real-world project, you can replace it with [Component](https://github.com/stuartsierra/component), [Mount](https://github.com/tolitius/mount), or [Integrant](https://github.com/weavejester/integrant).
 :::
 
 <Tabs
@@ -88,7 +88,7 @@ Make sure you are changing the above values to refer your database connection. T
 
 ## Creating Lacinia Schema
 
-With the datasource in place, all we need to do is the create a lacinia schema using it. 
+Then create a lacinia schema from the data source using GraphQLize. 
 
 
 ```clojure {3,7}
@@ -141,7 +141,8 @@ To do a test drive of this implementation, start the server
   http://localhost:8080/graphql
 ```
 
-You'll get a response like below
+You'll get a response like below.
+
 ```json
 {
   "data": {
@@ -175,7 +176,7 @@ Then configure pedestal to use this _static_ directory for serving static files.
 ; ...
 ```
 
-When you restart the server, the voyager will be available at _http://localhost:8080/voyager.html_. A sample output would look like [this](https://www.graphqlize.org/html/sakila-voyager.html).
+When you restart the server, the Voyager will be available at _http://localhost:8080/voyager.html_. A sample output would look like [this](https://www.graphqlize.org/html/sakila-voyager.html).
 
 Then to interact with the GraphQL API, let's add the [GraphQL Playground](https://github.com/prisma-labs/graphql-playground). Like Voyager, download this [playground.html](https://github.com/graphqlize/graphqlize-demo/blob/master/clojure/pedestal/resources/static/playground.html) file and put in the _static_ directory. 
 
