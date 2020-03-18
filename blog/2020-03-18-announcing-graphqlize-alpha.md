@@ -63,7 +63,7 @@ There are close to [forty issues](https://github.com/graphqlize/graphqlize/issue
 You can keep track of the progress by
 
 - Following the [GitHub project board](https://github.com/orgs/graphqlize/projects/1)
-- Subscribing to [GraphQLize's newsletter]().
+- Subscribing to [GraphQLize's newsletter](https://tinyletter.com/graphqlize-org).
 - Joining [GraphQLize's Discord](https://discord.gg/akkdPqf).
 
 ## How can I contribute?

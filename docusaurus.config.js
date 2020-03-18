@@ -26,6 +26,16 @@ module.exports = {
           href: "https://github.com/graphqlize/graphqlize",
           label: "GitHub",
           position: "right"
+        },
+        {
+          href: "https://discord.gg/akkdPqf",
+          label: "Discord",
+          position: "right"
+        },
+        {
+          href: "https://tinyletter.com/graphqlize-org",
+          label: "Newsletter",
+          position: "right"
         }
       ]
     },
