@@ -1,7 +1,7 @@
 module.exports = {
   title: "GraphQLize",
   tagline:
-    "A JVM library for developing GraphQL API from your existing PostgreSQL and MySQL databases",
+    "A JVM library for developing GraphQL API instantly from Postgres and MySQL databases",
   url: "https://www.graphqlize.org",
   baseUrl: "/",
   favicon: "img/favicon.ico",
