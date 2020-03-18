@@ -7,11 +7,11 @@ sidebar_label: Spark Java
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-Getting started with GraphQLize in [Spark Java](http://sparkjava.com/) is simple and involves only few steps.
+Getting started with GraphQLize in [Spark Java](http://sparkjava.com/) is simple and involves only a few steps.
 
 ## Adding Dependencies
 
-Let's start with creating a new Java Project using Gradle (or Maven) and add the `graphqlize-java` & the jdbc driver dependencies.
+Let's start with creating a new Java Project using Gradle (or Maven) and add the `graphqlize-java` & the JDBC driver dependencies.
 
 [![Clojars Project](https://img.shields.io/clojars/v/org.graphqlize/graphqlize-java.svg)](https://clojars.org/org.graphqlize/graphqlize-java)
 
@@ -44,7 +44,7 @@ dependencies {
 
 ## Initializing GraphQLizeResolver
 
-To initialize `GraphQLizeResolver` we need a datasource holding the underlying database connection.
+To initialize `GraphQLizeResolver`, we need a data source holding the underlying database connection.
 
 ### Configuring DataSource
 
@@ -106,10 +106,10 @@ public class Program {
 </Tabs>
 
 :::note
-Make sure you are changing the above values to refer your database connection. The above example assumes that you are using the _sakila_ database which can be created using the scripts from this [JOOQ's example repository](https://github.com/jOOQ/jOOQ/tree/master/jOOQ-examples/Sakila).  
+Make sure you are changing the above values to refer your database connection. The above example assumes that you are using the _sakila_ database created from this [JOOQ's example repository](https://github.com/jOOQ/jOOQ/tree/master/jOOQ-examples/Sakila).  
 :::
 
-With the datasource in place, all we need to do is the create a new instance of `GraphQLizeResolver` using it. 
+With the data source in place, all we need to do is the create a new instance of `GraphQLizeResolver` using it. 
 
 ```java {9-10}
 import org.graphqlize.java.GraphQLResolver;
@@ -127,12 +127,12 @@ public class Program {
 ```
 
 :::note
-Currently, it takes around 8 to 12 seconds to initialize. I am planning to [work on it](https://github.com/graphqlize/graphqlize/issues/48) it in a future release.
+Currently, it takes around 8 to 12 seconds to initialize. I am planning to [work on it](https://github.com/graphqlize/graphqlize/issues/48) in a future release.
 :::
 
 ## Adding GraphQL Endpoint
 
-The next step is adding an API to expose the GraphQL endpoint. To do it, first add a POJO to model the incoming GraphQL request.
+The next step is adding an API to expose the GraphQL endpoint. To do it, first, add a POJO to model the incoming GraphQL request.
 
 ```java
 import java.util.Map;
@@ -190,7 +190,7 @@ public class Program {
 }
 ```
 
-It return the `result` as stringified JSON and it can be sent as response body with the content type as `application/json`. 
+It returns the `result` as stringified JSON, and we are sending it as response body with the content type as `application/json`. 
 
 ### Test Drive
 
@@ -203,7 +203,8 @@ To do a test drive of this implementation, start the server and hit the endpoint
   http://localhost:4567/graphql
 ```
 
-You'll get a response like below
+You'll get a response like below.
+
 ```json
 {
   "data": {
@@ -220,9 +221,9 @@ With the GraphQL endpoint up and running, the next step is introspecting the Gra
 
 To introspect, we are going to make use of [Voyager](https://github.com/APIs-guru/graphql-voyager), a tool to visualize GraphQL API as an interactive graph. Adding it to our project is easy thanks to [static content serve capability](http://sparkjava.com/documentation#static-files) of Spark Java. 
 
-All you need to do is download this [voyager html](https://github.com/graphqlize/graphqlize-demo/blob/master/java/spark/src/main/resources/public/voyager.html) file and put it under the _src/main/resources/public_ directory. 
+All you need to do is download this [voyager.html](https://github.com/graphqlize/graphqlize-demo/blob/master/java/spark/src/main/resources/public/voyager.html) file and put it under the _src/main/resources/public_ directory. 
 
-Then let the Spark Java know to use this _public_ directory to serve static files
+Then let the Spark Java know to use this _public_ directory to serve static files.
 
 ```java
 import static spark.Spark.staticFiles;
@@ -238,9 +239,9 @@ public class Program {
 }
 ```
 
-When you restart the server, the voyager will be available at _http://localhost:4567/voyager.html_. A sample output would look like [this](https://www.graphqlize.org/html/sakila-voyager.html).
+When you restart the server, the Voyager will be available at _http://localhost:4567/voyager.html_. A sample output would look like [this](https://www.graphqlize.org/html/sakila-voyager.html).
 
-Then to interact with the GraphQL API, let's add the [GraphQL Playground](https://github.com/prisma-labs/graphql-playground). Like Voyager, download this [playground html](https://github.com/graphqlize/graphqlize-demo/blob/master/java/spark/src/main/resources/public/playground.html) file and put in the _public_ directory. 
+Then to interact with the GraphQL API, let's add the [GraphQL Playground](https://github.com/prisma-labs/graphql-playground). Like Voyager, download this [playground.html](https://github.com/graphqlize/graphqlize-demo/blob/master/java/spark/src/main/resources/public/playground.html) file and put in the _public_ directory. 
 
 This GraphQL playground will be available at _http://localhost:4567/playground.html_ after server restart. 
 
@@ -248,10 +249,10 @@ This GraphQL playground will be available at _http://localhost:4567/playground.h
 
 ## Next Steps
 
-Congrats! You are on course to build awesome applications using GraphQLize in less time. To save yourself some more time, do refer [this documentation](../../graphql_schema/types-and-fields) to know more about how GraphQLize generates the GraphQL schema and the queries. 
+Congrats! You are on course to build impressive applications using GraphQLize in less time. To save yourself some more time, do refer [this documentation](../../graphql_schema/types-and-fields) to know more about how GraphQLize generates the GraphQL schema and the queries. 
 
 The sample code is available in [this GitHub Repository](https://github.com/graphqlize/graphqlize-demo/tree/master/java/spark).
 
 :::note
-You can also customize certain default behaviors of GraphQLize in future releases.
+You can also customize certain default behaviours of GraphQLize in future releases.
 :::

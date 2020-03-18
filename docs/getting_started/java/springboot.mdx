@@ -13,7 +13,7 @@ As we typically do, let's go to [Spring Initializr](https://start.spring.io/) an
 
 ## Adding Dependencies
 
-The first step is to add the `graphqlize-java` & the jdbc driver dependencies.
+The first step is to add the `graphqlize-java` & the JDBC driver dependencies.
 
 [![Clojars Project](https://img.shields.io/clojars/v/org.graphqlize/graphqlize-java.svg)](https://clojars.org/org.graphqlize/graphqlize-java)
 
@@ -70,7 +70,7 @@ public class GraphQLizeResolverProvider {
 During initialization (via `constructor`), the `GraphQLizeResolver` reads the metadata of the database using the JDBC metadata APIs and keeps an in-memory representation of them.
 
 :::note
-Currently, it takes around 8 to 12 seconds to initialize. I am planning to [work on it](https://github.com/graphqlize/graphqlize/issues/48) it in a future release.
+Currently, it takes around 8 to 12 seconds to initialize. I am planning to [work on it](https://github.com/graphqlize/graphqlize/issues/48) in a future release.
 :::
 
 ### Configuring DataSource
@@ -105,7 +105,7 @@ spring.datasource.password=mysql
 </Tabs>
 
 :::note
-Make sure you are changing the above values to refer your database connection. The above example assumes that you are using the _sakila_ database which can be created using the scripts from this [JOOQ's example repository](https://github.com/jOOQ/jOOQ/tree/master/jOOQ-examples/Sakila).  
+Make sure you are changing the above values to refer your database connection. The above example assumes that you are using the _sakila_ database created from this [JOOQ's example repository](https://github.com/jOOQ/jOOQ/tree/master/jOOQ-examples/Sakila).  
 :::
 
 ## Adding GraphQL Endpoint
@@ -114,7 +114,7 @@ The final step is exposing an API endpoint for handling the GraphQL request. To 
 
 * Create a POJO `GraphQLRequest` for deserializing GraphQL request from the client.
 * Create a Controller class with a `GraphQLResolver` dependency. 
-* Create a method inside this classs to handle the GraphQL request. 
+* Create a method inside this class to handle the GraphQL request. 
 
 ```java {25-28}
 package org.graphqlize.java.springboot;
@@ -153,11 +153,11 @@ public class GraphQLController {
 }
 ```
 
-Handling the GraphQL request is simple as highlighted above. 
+Handling the GraphQL request is as simple as highlighted above. 
 
-All we need to do is to get the query & the variables from the request and invoke the `resolve` method on the initialized instance of `GraphQLizeResolver`. 
+Get the query & the variables from the request and invoke the `resolve` method on the initialized instance of `GraphQLizeResolver`. 
 
-It return the `result` as stringified JSON and it can be sent as response body with the content type as `application/json`. 
+It returns the `result` as stringified JSON, and we are sending it as response body with the content type as `application/json`. 
 
 ### Test Drive
 
@@ -170,7 +170,8 @@ To a test drive of this implementation, start the server and hit the endpoint vi
   http://localhost:8080/graphql
 ```
 
-You'll get a response like below
+You'll get a response like below.
+
 ```json
 {
   "data": {
@@ -187,11 +188,11 @@ With the GraphQL endpoint up and running, the next step is introspecting the Gra
 
 To introspect, we are going to make use of [Voyager](https://github.com/APIs-guru/graphql-voyager), a tool to visualize GraphQL API as an interactive graph. Adding it to our project is easy thanks to [static content serve capability](https://spring.io/blog/2013/12/19/serving-static-web-content-with-spring-boot) of Spring Boot. 
 
-All you need to do is download this [voyager html](https://github.com/graphqlize/graphqlize-demo/blob/master/java/spring-boot/src/main/resources/static/voyager.html) file and put it under the _src/main/resources/static_ directory. 
+All you need to do is download this [voyager.html](https://github.com/graphqlize/graphqlize-demo/blob/master/java/spring-boot/src/main/resources/static/voyager.html) file and put it under the _src/main/resources/static_ directory. 
 
-When you restart the server, the voyager will be available at _http://localhost:8080/voyager.html_. A sample output would look like [this](https://www.graphqlize.org/html/sakila-voyager.html).
+When you restart the server, the Voyager will be available at _http://localhost:8080/voyager.html_. A sample output would look like [this](https://www.graphqlize.org/html/sakila-voyager.html).
 
-Then to interact with the GraphQL API, let's add the [GraphQL Playground](https://github.com/prisma-labs/graphql-playground). Like Voyager, download this [playground html](https://github.com/graphqlize/graphqlize-demo/blob/master/java/spring-boot/src/main/resources/static/playground.html) file and put in the _static_ directory. 
+Then to interact with the GraphQL API, let's add the [GraphQL Playground](https://github.com/prisma-labs/graphql-playground). Like Voyager, download this [playground.html](https://github.com/graphqlize/graphqlize-demo/blob/master/java/spring-boot/src/main/resources/static/playground.html) file and put in the _static_ directory. 
 
 This GraphQL playground will be available at _http://localhost:8080/playground.html_ after server restart. 
 
@@ -199,10 +200,10 @@ This GraphQL playground will be available at _http://localhost:8080/playground.h
 
 ## Next Steps
 
-Congrats! You are on course to build awesome applications using GraphQLize in less time. To save yourself some more time, do refer [this documentation](../../graphql_schema/types-and-fields) to know more about how GraphQLize generates the GraphQL schema and the queries. 
+Congrats! You are on course to build impressive applications using GraphQLize in less time. To save yourself some more time, do refer [this documentation](../../graphql_schema/types-and-fields) to know more about how GraphQLize generates the GraphQL schema and the queries. 
 
 The sample code is available in [this GitHub Repository](https://github.com/graphqlize/graphqlize-demo/tree/master/java/spring-boot).
 
 :::note
-You can also customize certain default behaviors of GraphQLize in future releases.
+You can also customize certain default behaviours of GraphQLize in future releases.
 :::

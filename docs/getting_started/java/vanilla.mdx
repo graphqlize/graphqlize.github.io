@@ -6,13 +6,13 @@ sidebar_label: Vanilla
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-One of the core design goal of GraphQLize is not to tie to any web development framework. It can be used a drop-in library in any Java project.
+One of the core design goals of GraphQLize is not to tie to any web development framework and remain as a drop-in JVM library.
 
 Getting started with GraphQLize in vanilla Java is straight-forward and involves only three steps.
 
 ## Adding Dependencies
 
-Let's start with creating a new Java Project using Gradle (or Maven) and add the `graphqlize-java` & the jdbc driver dependencies.
+Let's start with creating a new Java Project using Gradle (or Maven) and add the `graphqlize-java` & the JDBC driver dependencies.
 
 [![Clojars Project](https://img.shields.io/clojars/v/org.graphqlize/graphqlize-java.svg)](https://clojars.org/org.graphqlize/graphqlize-java)
 
@@ -41,7 +41,7 @@ dependencies {
 
 ## Initializing GraphQLizeResolver
 
-To initialize `GraphQLizeResolver` we need a datasource holding the underlying database connection.
+To initialize `GraphQLizeResolver`, we need a data source holding the underlying database connection.
 
 ### Configuring DataSource
 
@@ -103,10 +103,10 @@ public class Program {
 </Tabs>
 
 :::note
-Make sure you are changing the above values to refer your database connection. The above example assumes that you are using the _sakila_ database which can be created using the scripts from this [JOOQ's example repository](https://github.com/jOOQ/jOOQ/tree/master/jOOQ-examples/Sakila).  
+Make sure you are changing the above values to refer your database connection. The above example assumes that you are using the _sakila_ database created from this [JOOQ's example repository](https://github.com/jOOQ/jOOQ/tree/master/jOOQ-examples/Sakila).  
 :::
 
-With the datasource in place, all we need to do is the create a new instance of `GraphQLizeResolver` using it.
+The next step is using this data source object to create a new instance of `GraphQLizeResolver`.
 
 
 ```java {9-10}
@@ -125,12 +125,12 @@ public class Program {
 ```
 
 :::note
-Currently, it takes around 8 to 12 seconds to initialize. I am planning to [work on it](https://github.com/graphqlize/graphqlize/issues/48) it in a future release.
+Currently, it takes around 8 to 12 seconds to initialize. I am planning to [work on it](https://github.com/graphqlize/graphqlize/issues/48) in a future release.
 :::
 
 ## Querying Database
 
-With the GraphQLize resolver in place, we can query the undelying database using GraphQL. 
+With the GraphQLize resolver in place, we can query the underlying database using GraphQL. 
 
 ```java {5-7}
 public class Program {
@@ -148,7 +148,7 @@ public class Program {
 { "data": { "actorByActorId": { "firstName": "PENELOPE", "lastName": "GUINESS" } } }
 ```
 
-The `resolve` method has an overload to support [GraphQL variables](https://graphql.org/learn/queries/#variables) as well. The above example can be re-written using variables as below
+The `resolve` method has an overload to support [GraphQL variables](https://graphql.org/learn/queries/#variables) as well. The above example can be re-written using variables as below.
 
 ```java {5-8}
 public class Program {
@@ -299,6 +299,6 @@ We'll get the following as output (prettified for readability)
 
 ## Next Steps
 
-Congrats! You are on course to build awesome applications using GraphQLize in less time. To save yourself some more time, do refer [this documentation](../../graphql_schema/types-and-fields) to know more about how GraphQLize generates the GraphQL schema and the queries. 
+Congrats! You are on course to build impressive applications using GraphQLize in less time. To save yourself some more time, do refer [this documentation](../../graphql_schema/types-and-fields) to know more about how GraphQLize generates the GraphQL schema and the queries. 
 
 The sample code is available in [this GitHub Repository](https://github.com/graphqlize/graphqlize-demo/tree/master/java/vanilla).

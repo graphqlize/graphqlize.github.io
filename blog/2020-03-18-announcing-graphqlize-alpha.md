@@ -58,7 +58,7 @@ It will be in a few months.
 
 The objective of this alpha release is to get early feedback from the community.
 
-There are close to [forty issues](https://github.com/graphqlize/graphqlize/issues?q=is%3Aissue+is%3Aopen+sort%3Acreated-asc) that I am planning to work on in the upcoming months.
+There are close to [forty issues](https://github.com/graphqlize/graphqlize/issues?q=is%3Aissue+is%3Aopen+sort%3Acreated-asc) that I am planning to work on in the upcoming months to make it production ready.
 
 You can keep track of the progress by
 
@@ -68,13 +68,13 @@ You can keep track of the progress by
 
 ## How can I contribute?
 
-GraphQLize is at its early stage now, and the codebase is not stable yet.
+GraphQLize is at its early stage now, and the codebase and the APIs are not stable yet.
 
-So, at this instant, the best way to contribute is to initiate a chat in [GraphQLize's Discord](https://discord.gg/akkdPqf) channel or raise a GitHub issue with all the relevant details, and we'll take it from there.
+So, at this instant, the best way to contribute is to initiate a chat in [GraphQLize's Discord](https://discord.gg/akkdPqf) channel or raise [a GitHub issue](https://github.com/graphqlize/graphqlize/issues/new) with all the relevant details, and we'll take it from there.
 
 ## Oracle & SQL Server Support
 
-One of the design goal of GraphQLize from day one is to support Postgres, MySQL, Oracle & MS SQL Server. To start with, I am focussing on getting it to a working state for Postgres & MySQL. After accomplishing this, I will be focusing on the other two.
+One of the design goal of GraphQLize from day one is to support Postgres, MySQL, Oracle & MS SQL Server. To start with, I am focussing on getting it to a production ready state for Postgres & MySQL. After accomplishing this, I will be focusing on the other two.
 
 ## Acknowledgements
 
@@ -88,7 +88,7 @@ GraphQLize is not possible without the following excellent Clojure libraries.
 - [inflections](https://github.com/r0man/inflections-clj)
 - [data-json](https://github.com/clojure/data.json)
 
-The documentation of GraphQLize uses the [Sakila](https://www.jooq.org/sakila) database from [JOOQ](https://www.jooq.org) extensively.
+The samples in the documentation of GraphQLize uses the [Sakila](https://www.jooq.org/sakila) database from [JOOQ](https://www.jooq.org) extensively.
 
 Cheers,  
 Stay Safe & Tuned!!
