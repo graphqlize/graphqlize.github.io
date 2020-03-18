@@ -103,13 +103,13 @@ query {
 }
 ```
 
-In the above the auto generated name `employeeReportsToEmployees` (removal of `_id` suffix and pluraize the target table `employee`) is not meaningful. We can use [GraphQL field alias](https://graphql.org/learn/queries/#aliases) like below.
+In the above the auto generated name `employeeReportsToEmployees` (removal of `_id` suffix and pluraize the target table `employee`) is not meaningful. We can use [GraphQL field alias](https://graphql.org/learn/queries/#aliases) to make it better like below.
 
-```graphql
+```graphql {4}
 query {
   employeeById(id: 1) {
     firstName
-    reportees: employeeReportsToEmployees {
+    directReportees: employeeReportsToEmployees {
       firstName
     }
   }
@@ -118,12 +118,12 @@ query {
 
 Now, the query result would look like
 
-```json
+```json {5}
 {
   "data": {
     "employeeById": {
       "firstName": "Andrew",
-      "reportees": [
+      "directReportees": [
         {
           "firstName": "Michael"
         }

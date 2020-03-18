@@ -27,12 +27,12 @@ GraphQlize supports Postgres [schema](https://www.postgresql.org/docs/current/dd
 | human_resources | employee        | HumanResourcesEmployee |
 
 :::note
-Only table name is singularized and not the schema name.
+The table name is alone singularized and not the schema name.
 :::
 
 ## Field name
 
-The Field names of a generated GraphQL Type represent the column names of the corresponding database table. GraphQLize generates the field name by converting the column name to its _camelCase_ version.
+The Field names of a generated GraphQL Type represent the column names of the corresponding database table or view. GraphQLize generates the field name by converting the column name to its _camelCase_ version.
 
 For a table like below,
 
@@ -119,5 +119,5 @@ During the schema generation, GraphQLize checks the column's database type and c
 </Tabs>
 
 :::note
-GraphQLize assumes `String` as a default GraphQL scalar data type for the field if the corresponding column database type is not mentioned in the above table.
+If a column's database type is not available in the above table, GraphQLize assumes `String` as the default scalar data type for the corresponding GraphQL field.
 :::

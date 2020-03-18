@@ -7,7 +7,7 @@ sidebar_label: Query Tables By Primary Key(s)
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-For every table that has primary key(s), GraphQLize generates a corresponding GraphQL query to enable querying the table by its primary keys.
+For every table that has a primary key(s), GraphQLize generates a corresponding GraphQL query to enable querying the table by its primary keys.
 
 For a table like below,
 
@@ -105,7 +105,7 @@ type QueryRoot {
 }
 ```
 
-The convention followed for generating the query name is same as above except that primary key columns are sorted by their names and concatenated with `And`. 
+The convention followed here for generating the query name is same as above except that primary key columns are sorted by their names and concatenated with `And`. 
 
 ## Sample Queries
 
