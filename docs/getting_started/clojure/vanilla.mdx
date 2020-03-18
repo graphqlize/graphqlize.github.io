@@ -1,15 +1,15 @@
 ---
-id: pedestal
-title: Pedestal
-sidebar_label: Pedestal
+id: vanilla
+title: Vanilla Clojure
+sidebar_label: Vanilla
 ---
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-GraphQLize built on top of [Lacinia](https://lacinia.readthedocs.io/en/latest/), a de-facto library for implementing GraphQL APIs in Clojure.
+One of the core design goal of GraphQLize is not to tie to any web development library/framework. It can be used a drop-in library in any Clojure project. GraphQLize built on top of [Lacinia](https://lacinia.readthedocs.io/en/latest/), a de-facto library for implementing GraphQL APIs in Clojure.
 
-Getting started with GraphQLize using Pedastal involves only few steps. Let's dive in.
+Getting started with GraphQLize in vanilla Clojure is straight-forward and involves only three steps.
 
 ## Adding Dependencies
 
@@ -27,9 +27,7 @@ Create a new Clojure project using [deps](https://github.com/seancorfield/clj-ne
          ;; for postgres
          org.postgresql/postgresql        {:mvn/version "42.2.8"}
          ;; for MySQL
-         mysql/mysql-connector-java       {:mvn/version "8.0.19"}
-         ;; Lacinia <-> Pedastal Service
-         com.walmartlabs/lacinia-pedestal {:mvn/version "0.13.0-alpha-1"}}}
+         mysql/mysql-connector-java       {:mvn/version "8.0.19"}}}
 ```
 
 ## Configuring DataSource
@@ -50,8 +48,8 @@ To keep things simple, this sample uses `def` to define the states. In a real-wo
 <TabItem value="postgres">
 
 ```clojure
-;; src/server.clj
-(ns server
+;; src/core.clj
+(ns core
   (:require [hikari-cp.core :as hikari]))
 
 (def db-spec (hikari/make-datasource {:adapter           "postgresql"
@@ -67,8 +65,8 @@ To keep things simple, this sample uses `def` to define the states. In a real-wo
 <TabItem value="mysql">
 
 ```clojure
-;; src/server.clj
-(ns server
+;; src/core.clj
+(ns core
   (:require [hikari-cp.core :as hikari]))
 
 (def db-spec (hikari/make-datasource {:server-name       "localhost"
@@ -92,7 +90,7 @@ With the datasource in place, all we need to do is the create a lacinia schema u
 
 
 ```clojure {3,7}
-(ns server
+(ns core
   (:require ; ...
             [graphqlize.lacinia.core :as l]))
 
@@ -101,94 +99,75 @@ With the datasource in place, all we need to do is the create a lacinia schema u
 (def lacinia-schema (l/schema db-spec))
 ```
 
-## Adding GraphQL Endpoint
+## Querying Database
 
-The final step is adding pedestal endpoint to expose the `/graphql` API. With the help of [lacinia-pedestal](https://github.com/walmartlabs/lacinia-pedestal) library, we can do it with ease.
+With the `lacinia-schema` in place, we can query the undelying database using GraphQL by invoking the Lacinia's [execute](https://walmartlabs.github.io/apidocs/lacinia/com.walmartlabs.lacinia.html#var-execute) function.
 
-```clojure {9-11}
-(ns server
-  (:require ; ...
-            [com.walmartlabs.lacinia.pedestal :as lacinia-pedestal]))
-
-(def db-spec ...)
-
-(def lacinia-schema ...)
-
-(def service 
-  (lacinia-pedestal/service-map 
-    lacinia-schema {:port     8080}))
-
-(defonce runnable-service (server/create-server service))
-
-(defn -main []
-  (server/start runnable-service))
-```
-
-### Test Drive
-
-To do a test drive of this implementation, start the server
-
-```bash
-> clj -m server
-```
-
- and hit the endpoint via curl.
-
-```bash
-> curl -X POST \
-  --data '{"query": "query { actorByActorId(actorId: 1){firstName}}"}' \
-  -H "Content-Type: application/json" \
-  http://localhost:8080/graphql
-```
-
-You'll get a response like below
-```json
-{
-  "data": {
-    "actorByActorId": {
-      "firstName": "PENELOPE"
-    }
-  }
-}
-```
-
-## GraphQL Playground and Voyager
-
-With the GraphQL endpoint up and running, the next step is introspecting the GraphQL schema and try out some more queries. 
-
-To introspect, we are going to make use of [Voyager](https://github.com/APIs-guru/graphql-voyager), a tool to visualize GraphQL API as an interactive graph. To add Voyager, download this [voyager.html](https://github.com/graphqlize/graphqlize-demo/blob/master/clojure/pedestal/resources/static/voyager.html) file and put it under the _resources/static_ directory.
-
-Then configure pedestal to use this _static_ directory for serving static files.
-
-```clojure {7,10,11}
-(ns server
-  (:require ; ...
-            [io.pedestal.http :as http]))
-
+```clojure {8,10}
+(ns core
+  (:require ;...
+            [com.walmartlabs.lacinia :as lacinia]))
 ; ...
-(def service 
-  (assoc
-    (lacinia-pedestal/service-map 
-      lacinia-schema {:port     8080})
-    ::http/resource-path
-    "/static"))
-; ...
+
+(defn execute
+  ([query]
+   (lacinia/execute lacinia-schema query nil nil))
+  ([query variables]
+   (lacinia/execute lacinia-schema query variables nil)))
 ```
 
-When you restart the server, the voyager will be available at _http://localhost:8080/voyager.html_. A sample output would look like [this](https://www.graphqlize.org/html/sakila-voyager.html).
+```clojure
+=> (execute "query { actorByActorId(actorId: 1) { firstName, lastName } }")
+;; {:data { :actorByActorId { :firstName "PENELOPE" :lastName "GUINESS" } } }
+```
 
-Then to interact with the GraphQL API, let's add the [GraphQL Playground](https://github.com/prisma-labs/graphql-playground). Like Voyager, download this [playground.html](https://github.com/graphqlize/graphqlize-demo/blob/master/clojure/pedestal/resources/static/playground.html) file and put in the _static_ directory. 
+The `execute` function has an overload to support [GraphQL variables](https://graphql.org/learn/queries/#variables) as well. The above example can be re-written using variables as below
 
-This GraphQL playground will be available at _http://localhost:8080/playground.html_ after server restart. 
+```clojure
+=> (execute 
+     "query($actorId: Int!) { actorByActorId(actorId: $actorId) { firstName, lastName } }" 
+     {:actorId 1})
+{:data { :actorByActorId { :firstName "PENELOPE" :lastName "GUINESS" } } }
+```
 
-![](/img/graphql-playground.png)
+We can also run the [introspection queries](https://graphql.org/learn/introspection/) to know what types and queries the `GraphQLizeResolver` supports. 
+
+To know all the types generated by the GraphQLize. 
+
+```clojure
+=> (execute "{__schema {types {name}}}")
+{:data
+ {:__schema
+  {:types
+   ({:name "Actor"}
+    {:name "ActorInfo"}
+    {:name "Address"} ...)}}}
+```
+
+To know more the fields of a given type, we can run the following introspection query.
+
+```clojure
+=> (execute "{__type(name: \"Actor\") { fields { name type { name kind ofType { name kind }}}}}")
+{:data
+ {:__type
+  {:fields
+   ({:name "actorId" 
+     :type {:name nil :kind :NON_NULL :ofType {:name "Int" :kind :SCALAR}}}
+    {:name "filmActors" 
+     :type {:name nil :kind :NON_NULL :ofType {:name nil :kind :LIST}}}
+    {:name "films" 
+     :type {:name nil :kind :NON_NULL :ofType {:name nil :kind :LIST}}}
+    {:name "firstName" 
+     :type {:name nil :kind :NON_NULL :ofType {:name "String" :kind :SCALAR}}}
+    {:name "lastName" 
+     :type {:name nil :kind :NON_NULL :ofType {:name "String" :kind :SCALAR}}}
+    {:name "lastUpdate" 
+     :type {:name nil :kind :NON_NULL :ofType {:name "String" :kind :SCALAR}}})}}}
+```
 
 ## Next Steps
 
 Congrats! You are on course to build awesome applications using GraphQLize in less time. To save yourself some more time, do refer [this documentation](../../graphql_schema/types-and-fields) to know more about how GraphQLize generates the GraphQL schema and the queries. 
 
-The sample code is available in [this GitHub Repository](https://github.com/graphqlize/graphqlize-demo/tree/master/clojure/pedestal).
+The sample code is available in [this GitHub Repository](https://github.com/graphqlize/graphqlize-demo/tree/master/clojure/vanilla).
 
-:::note
-You can also customize certain default behaviors of GraphQLize in future releases.
-:::

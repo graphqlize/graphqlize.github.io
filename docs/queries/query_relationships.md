@@ -89,7 +89,7 @@ query {
 }
 ```
 
-```grahpql
+```graphql
 query {
   # Querying `employee` table by its primary key `id`
   employeeById(id: 1) {
