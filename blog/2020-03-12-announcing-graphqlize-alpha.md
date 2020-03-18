@@ -11,7 +11,7 @@ tags: [announcement, clojure, java, graphql, postgres, mysql]
 
 Hello World,
 
-I am excited and delighted to introduce, [GraphQLize](https://www.graphqlize.org), an open source JVM library for developing GraphQL API from your existing PostgreSQL and MySQL databases.
+I am excited and delighted to introduce, [GraphQLize](https://www.graphqlize.org), an open source JVM library for developing GraphQL API instantly from your existing PostgreSQL and MySQL databases.
 
 It aims to simplify the effort required to expose GraphQL APIs over relational databases.
 

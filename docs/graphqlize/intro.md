@@ -6,7 +6,7 @@ sidebar_label: Introduction
 
 ## What is GraphQLize?
 
-GraphQLize is an open source JVM library for developing GraphQL API from your existing PostgreSQL and MySQL databases. It aims to simplify the effort required to expose GraphQL APIs over relational databases.
+GraphQLize is an open source JVM library for developing GraphQL API instantly from your existing PostgreSQL and MySQL databases. It aims to simplify the effort required to expose GraphQL APIs over relational databases.
 
 It is written in Clojure with Java interoperability.
 
