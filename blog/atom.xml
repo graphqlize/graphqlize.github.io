@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.graphqlize.org/blog</id>
     <title>GraphQLize Blog</title>
-    <updated>2020-03-12T00:00:00.000Z</updated>
+    <updated>2020-03-18T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://www.graphqlize.org/blog"/>
     <subtitle>GraphQLize Blog</subtitle>
@@ -12,7 +12,7 @@
         <title type="html"><![CDATA[Announcing GraphQLize Alpha]]></title>
         <id>announcing-graphqlize-alpha</id>
         <link href="https://www.graphqlize.org/blog/announcing-graphqlize-alpha"/>
-        <updated>2020-03-12T00:00:00.000Z</updated>
+        <updated>2020-03-18T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Hello World,]]></summary>
     </entry>
 </feed>
