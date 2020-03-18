@@ -1,48 +1,51 @@
-import React from 'react';
-import classnames from 'classnames';
-import Layout from '@theme/Layout';
-import Link from '@docusaurus/Link';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import styles from './styles.module.css';
+import React from "react";
+import classnames from "classnames";
+import Layout from "@theme/Layout";
+import Link from "@docusaurus/Link";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import styles from "./styles.module.css";
 
 const features = [
   {
     title: <>Easy to Use</>,
-    imageUrl: 'img/undraw_docusaurus_mountain.svg',
+    imageUrl: "img/undraw_press_play_bx2d.svg",
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        GraphQLize was designed from the ground up to be easily added as a
+        drop-in library to any JVM language projects and get it up and running
+        quickly.
       </>
-    ),
+    )
   },
   {
     title: <>Focus on What Matters</>,
-    imageUrl: 'img/undraw_docusaurus_tree.svg',
+    imageUrl: "img/undraw_maintenance_cn7j.svg",
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        GraphQLize lets you focus on your core business logic, and it&apos;ll do
+        the chores.
       </>
-    ),
+    )
   },
   {
-    title: <>Powered by React</>,
-    imageUrl: 'img/undraw_docusaurus_react.svg',
+    title: <>Powered by JVM & JDBC</>,
+    imageUrl: "img/undraw_source_code_xx2e.svg",
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        GraphQLize is a JVM library written in Clojure with Java
+        interoperability. It automatically generates the GraphQL schema and
+        resolves the queries using single efficient SQL by making use of JDBC
+        driver's metadata.
       </>
-    ),
-  },
+    )
+  }
 ];
 
-function Feature({imageUrl, title, description}) {
+function Feature({ imageUrl, title, description }) {
   const imgUrl = useBaseUrl(imageUrl);
   return (
-    <div className={classnames('col col--4', styles.feature)}>
+    <div className={classnames("col col--4", styles.feature)}>
       {imgUrl && (
         <div className="text--center">
           <img className={styles.featureImage} src={imgUrl} alt={title} />
@@ -56,22 +59,24 @@ function Feature({imageUrl, title, description}) {
 
 function Home() {
   const context = useDocusaurusContext();
-  const {siteConfig = {}} = context;
+  const { siteConfig = {} } = context;
   return (
     <Layout
       title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
-      <header className={classnames('hero hero--primary', styles.heroBanner)}>
+      description="Description will go into a meta tag in <head />"
+    >
+      <header className={classnames("hero hero--primary", styles.heroBanner)}>
         <div className="container">
           <h1 className="hero__title">{siteConfig.title}</h1>
           <p className="hero__subtitle">{siteConfig.tagline}</p>
           <div className={styles.buttons}>
             <Link
               className={classnames(
-                'button button--outline button--secondary button--lg',
-                styles.getStarted,
+                "button button--outline button--secondary button--lg",
+                styles.getStarted
               )}
-              to={useBaseUrl('docs/doc1')}>
+              to={useBaseUrl("docs/graphqlize/intro#getting-started")}
+            >
               Get Started
             </Link>
           </div>

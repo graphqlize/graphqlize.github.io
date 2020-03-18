@@ -36,12 +36,12 @@ module.exports = {
           title: "Docs",
           items: [
             {
-              label: "Style Guide",
-              to: "docs/doc1"
+              label: "Getting Started",
+              to: "docs/graphqlize/intro#getting-started"
             },
             {
-              label: "Second Doc",
-              to: "docs/doc2"
+              label: "GraphQL Schema Conventions",
+              to: "docs/graphql_schema/types-and-fields"
             }
           ]
         },
@@ -51,15 +51,6 @@ module.exports = {
             {
               label: "Discord",
               href: "https://discord.gg/akkdPqf"
-            }
-          ]
-        },
-        {
-          title: "Social",
-          items: [
-            {
-              label: "Blog",
-              to: "blog"
             },
             {
               label: "GitHub",
@@ -68,6 +59,19 @@ module.exports = {
             {
               label: "Twitter",
               href: "https://twitter.com/graphqlize"
+            }
+          ]
+        },
+        {
+          title: "Updates",
+          items: [
+            {
+              label: "Newsletter",
+              href: "https://tinyletter.com/graphqlize-org"
+            },
+            {
+              label: "Blog",
+              to: "blog"
             }
           ]
         }
