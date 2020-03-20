@@ -4,8 +4,257 @@ title: Ktor
 sidebar_label: Ktor
 ---
 
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+One of the core design goals of GraphQLize is not to tie to any web development framework and remain as a drop-in JVM library.
+
+Getting started with GraphQLize in [Ktor](https://ktor.io/) is simple and involves only a few steps.
+
+## Adding Dependencies
+
+Let's start with creating a [new Ktor Project](https://ktor.io/quickstart/index.html#set-up-a-ktor-project) using Gradle & Netty. Under _Server_ settings, select _Jackson_ & _Content Negotiation_.
+
+Then in the created project add the `graphqlize-java` & the JDBC driver dependencies.
+
+[![Clojars Project](https://img.shields.io/clojars/v/org.graphqlize/graphqlize-java.svg)](https://clojars.org/org.graphqlize/graphqlize-java)
+
+```groovy {4,15}
+// ...
+repositories {
+  // ...
+  maven { url "https://clojars.org/repo" }
+}
+// ...
+dependencies {
+
+  // For Postgres
+  implementation 'org.postgresql:postgresql:42.2.10'
+
+  // For MySQL
+  implementation 'mysql:mysql-connector-java:8.0.19'
+
+  implementation 'org.graphqlize:graphqlize-java:0.1.0-alpha4'
+
+  // DB Connection Pooling
+  implementation 'com.zaxxer:HikariCP:3.4.2'
+
+  // ...
+}
 ```
-Server -> Content Negotiation
-* Jackson
-* Content Negotiation
+
+## Initializing GraphQLizeResolver
+
+To initialize `GraphQLizeResolver`, we need a [DataSource](https://docs.oracle.com/javase/7/docs/api/javax/sql/DataSource.html).
+
+### Configuring DataSource
+
+<Tabs
+  defaultValue="postgres"
+  values={[
+    { label: 'Postgres', value: 'postgres' },
+    { label: 'MySQL', value: 'mysql' }
+  ]
+}>
+<TabItem value="postgres">
+
+```kotlin
+// Application.kt
+package org.graphqlize
+
+// ...
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
+fun getDataSource(): HikariDataSource {
+  val config = HikariConfig()
+  config.setJdbcUrl("jdbc:postgresql://localhost:5432/sakila");
+  config.setUsername("postgres");
+  config.setPassword("postgres");
+  return HikariDataSource(config)
+}
+
+// ...
+
+fun Application.module(testing: Boolean = false) { 
+  val dataSource = getDataSource()
+  // ...
+}
 ```
+
+</TabItem>
+<TabItem value="mysql">
+
+```kotlin
+// Application.kt
+package org.graphqlize
+
+// ...
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
+fun getDataSource(): HikariDataSource {
+  val config = HikariConfig()
+  config.setJdbcUrl("jdbc:postgresql://localhost:5432/sakila");
+  config.setUsername("postgres");
+  config.setPassword("postgres");
+  return HikariDataSource(config)
+}
+
+// ...
+
+fun Application.module(testing: Boolean = false) { 
+  val dataSource = getDataSource()
+  // ...
+}
+
+```
+
+</TabItem>
+</Tabs>
+
+:::note
+Make sure you are changing the above values to refer your database connection. The above example assumes that you are using the _sakila_ database created from this [JOOQ's example repository](https://github.com/jOOQ/jOOQ/tree/master/jOOQ-examples/Sakila).  
+:::
+
+With the data source in place, all we need to do is the create a new instance of `GraphQLizeResolver` using it. 
+
+```kotlin {8}
+// ...
+import org.graphqlize.java.GraphQLResolver;
+import org.graphqlize.java.GraphQLizeResolver;
+// ...
+
+fun Application.module(testing: Boolean = false) { 
+  // ...
+  val graphQLResolver = GraphQLizeResolver(dataSource)
+}
+```
+
+:::note
+Currently, it takes around 8 to 12 seconds to initialize. I am planning to [work on it](https://github.com/graphqlize/graphqlize/issues/48) in a future release.
+:::
+
+
+## Adding GraphQL Endpoint
+
+The next step is adding an API to expose the GraphQL endpoint. To do it, first, add a data class to model the incoming GraphQL request.
+
+```kotlin
+// ...
+import com.fasterxml.jackson.annotation.JsonCreator
+
+// ...
+data class GraphQLRequest @JsonCreator constructor(
+    val query: String,
+    val variables: Map<String, Any>?
+)
+// ...
+```
+
+Then add a new router `/graphql` and deserialize the request to this `GraphQLRequest` class using Jackson. Finally, get the query & the variables from the request and invoke the `resolve` method on the initialized instance of `GraphQLizeResolver`. It returns the `result` as stringified JSON, and we are sending it as response body with the content type as `application/json`. 
+
+```kotlin {17-20}
+// ...
+import com.fasterxml.jackson.databind.DeserializationFeature
+
+// ...
+fun Application.module(testing: Boolean = false) {
+  val dataSource = getDataSource()
+  val graphQLResolver = GraphQLizeResolver(dataSource)
+
+  install(ContentNegotiation) {
+    jackson {
+      disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+    }
+  }
+
+  routing {
+    post("/graphql") {
+      val gqlReq = call.receive<GraphQLRequest>()
+      val result =
+        graphQLResolver.resolve(gqlReq.query, gqlReq.variables)
+      call.respondText(result, ContentType.Application.Json)
+    }
+  }
+}
+```
+
+### Test Drive
+
+To do a test drive of this implementation, start the server and hit the endpoint via curl.
+
+```bash
+> curl -X POST \
+  --data '{"query": "query { actorByActorId(actorId: 1){firstName}}"}' \
+  -H "Content-Type: application/json" \
+  http://localhost:4567/graphql
+```
+
+You'll get a response like below.
+
+```json
+{
+  "data": {
+    "actorByActorId": {
+      "firstName": "PENELOPE"
+    }
+  }
+}
+```
+
+## GraphQL Playground and Voyager
+
+With the GraphQL endpoint up and running, the next step is introspecting the GraphQL schema and try out some more queries. 
+
+To introspect, we are going to make use of [Voyager](https://github.com/APIs-guru/graphql-voyager), a tool to visualize GraphQL API as an interactive graph. Adding it to our project is easy thanks to [static content serve capability](https://ktor.io/servers/features/static-content.html) of Ktor. 
+
+All you need to do is download this [voyager.html](https://github.com/graphqlize/graphqlize-demo/blob/master/kotlin/ktor/resources/voyager.html) file and put it under the _/resources_ directory. 
+
+Then configure Ktor to serve this file.
+
+```kotlin
+// ...
+fun Application.module(testing: Boolean = false) {
+  // ...
+  routing {
+    // ...
+    static("/") {
+      resource("voyager.html")
+    }
+  }
+}
+```
+
+When you restart the server, the Voyager will be available at _http://localhost:8080/voyager.html_. A sample output would look like [this](https://www.graphqlize.org/html/sakila-voyager.html).
+
+Then to interact with the GraphQL API, let's add the [GraphQL Playground](https://github.com/prisma-labs/graphql-playground). Like Voyager, download this [playground.html](https://github.com/graphqlize/graphqlize-demo/blob/master/kotlin/ktor/resources/playground.html) file and put in the _resources_ directory. 
+
+```kotlin
+// ...
+fun Application.module(testing: Boolean = false) {
+  // ...
+  routing {
+    // ...
+    static("/") {
+      // ...
+      resource("playground.html")
+    }
+  }
+}
+```
+
+This GraphQL playground will be available at _http://localhost:8080/playground.html_ after server restart. 
+
+![](/img/graphql-playground.png)
+
+
+## Next Steps
+
+Congrats! You are on course to build impressive applications using GraphQLize in less time. To save yourself some more time, do refer [this documentation](/docs/graphql_schema/types-and-fields) to know more about how GraphQLize generates the GraphQL schema and the queries. 
+
+The sample code is available in [this GitHub Repository](https://github.com/graphqlize/graphqlize-demo/tree/master/kotlin/ktor).
+
+:::note
+You can also customize certain default behaviours of GraphQLize in future releases.
+:::
