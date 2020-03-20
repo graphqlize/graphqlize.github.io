@@ -34,18 +34,13 @@ Getting started with GraphQLize is simple and involves only a few steps.
 2. Initialize GraphQLize Resolver by providing the Java SQL [data source](https://docs.oracle.com/javase/7/docs/api/javax/sql/DataSource.html).
 3. Add a GraphQL API endpoint and use the initialized GraphQlize Resolver in the previous step.
 
-The actual implementation of these steps will vary based on which language (Java, Clojure) and framework (Spring Boot, Spark Java, Pedestal, etc.). Please refer the below links for more details.
+The actual implementation of these steps will vary based on which language (Java, Kotlin, Clojure) and framework (Spring Boot, Spark Java, Ktor, Pedestal, etc.). Please refer the below links for more details.
 
-- Java
-
-  - [Spring Boot](http://graphqlize.org/docs/getting_started/java/springboot)
-  - [Spark Java](http://graphqlize.org/docs/getting_started/java/sparkjava)
-  - [Vanilla Java](https://www.graphqlize.org/docs/getting_started/java/vanilla)
-
-- Clojure
-  - [Pedestal](https://www.graphqlize.org/docs/getting_started/clojure/pedestal)
-  - [Ring](https://www.graphqlize.org/docs/getting_started/clojure/ring)
-  - [Vanilla Clojure](https://www.graphqlize.org/docs/getting_started/clojure/vanilla)
+| Language | Frameworks                                                                                                                                                                                                                                                                                              |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Java     | <ul><li><a href="http://graphqlize.org/docs/getting_started/java/springboot">Spring Boot</a></li><li><a href="http://graphqlize.org/docs/getting_started/java/sparkjava">Spark Java</a></li><li><a href="https://www.graphqlize.org/docs/getting_started/java/vanilla">Vanilla Java</a></li></ul>       |
+| Kotlin   | <ul><li><a href="https://www.graphqlize.org/docs/getting_started/kotlin/springboot">Spring Boot</a></li><li><a href="https://www.graphqlize.org/docs/getting_started/kotlin/ktor">Ktor</a></li></ul>                                                                                                    |
+| Clojure  | <ul><li><a href="https://www.graphqlize.org/docs/getting_started/clojure/pedestal">Pedestal</a></li><li><a href="https://www.graphqlize.org/docs/getting_started/clojure/ring">Ring</a></li><li><a href="https://www.graphqlize.org/docs/getting_started/clojure/vanilla">Vanilla Clojure</a></li></ul> |
 
 ## Is It Production Ready?
 
