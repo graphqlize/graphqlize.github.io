@@ -27,6 +27,14 @@ module.exports = {
         },
         {
           type: "category",
+          label: "Kotlin",
+          items: [
+            "getting_started/kotlin/springboot",
+            "getting_started/kotlin/ktor"
+          ]
+        },
+        {
+          type: "category",
           label: "Clojure",
           items: [
             "getting_started/clojure/pedestal",

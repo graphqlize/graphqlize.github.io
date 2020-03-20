@@ -7,9 +7,9 @@ sidebar_label: Spring Boot
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-Getting started with GraphQLize in Spring-Boot is simple and straight forward.
+Getting started with GraphQLize in Kotlin Spring-Boot is simple and straight forward.
 
-As we typically do, let's go to [Spring Initializr](https://start.spring.io/) and create a Java project with Web & JPA as dependencies. This documentation uses this [Spring Initializr template](https://start.spring.io/#!type=gradle-project&language=java&platformVersion=2.2.5.RELEASE&packaging=jar&jvmVersion=1.8&groupId=org.graphqlize.java&artifactId=spring-boot&name=spring-boot&description=Demo%20project%20for%20Spring%20Boot%20and%20GraphQLize&packageName=org.graphqlize.java.spring-boot&dependencies=web,data-jpa).
+As we typically do, let's go to [Spring Initializr](https://start.spring.io/) and create a Kotlin project with Web & JPA as dependencies. This documentation uses this [Spring Initializr Template](https://start.spring.io/#!type=gradle-project&language=kotlin&platformVersion=2.2.5.RELEASE&packaging=jar&jvmVersion=1.8&groupId=org.graphqlize&artifactId=kotlin-spring-boot-demo&name=kotlin-spring-boot-demo&description=Demo%20project%20for%20Spring%20Boot&packageName=org.graphqlize.kotlin-spring-boot-demo&dependencies=web,data-jpa).
 
 ## Adding Dependencies
 
@@ -17,53 +17,41 @@ The first step is to add the `graphqlize-java` & the JDBC driver dependencies.
 
 [![Clojars Project](https://img.shields.io/clojars/v/org.graphqlize/graphqlize-java.svg)](https://clojars.org/org.graphqlize/graphqlize-java)
 
-```groovy {4,8}
+```kotlin {4,8}
 // ...
 repositories {
-	// ...
-	maven { url "https://clojars.org/repo" }
-}
-
-dependencies {
-  implementation 'org.graphqlize:graphqlize-java:0.1.0-alpha4'
-
-  // For Postgres
-  implementation 'org.postgresql:postgresql:42.2.10'
-
-  // For MySQL
-  implementation 'mysql:mysql-connector-java:8.0.19'
-
   // ...
+  maven(url= "https://clojars.org/repo")
 }
+dependencies {
+  // ...
+  implementation("org.graphqlize:graphqlize-java:0.1.0-alpha4")
+  // For Postgres
+  implementation("org.postgresql:postgresql:42.2.10")
+  // For MySQL
+  implementation("mysql:mysql-connector-java:8.0.19")
+}
+// ...
 ```
 
 ## Initializing GraphQLizeResolver
 
-The next step is initializing `GraphQLizeResolver`. To do it, let's a create new file _GraphQLizeResolverProvider.java_ and add the following code to expose the `GraphQLizeResolver` spring-boot bean.
+The next step is initializing `GraphQLizeResolver`. To do it, let's a create new file _GraphQLizeResolverProvider.kt_ and add the following code to expose the `GraphQLizeResolver` spring-boot bean.
 
-```java {9,16,19-22}
-package org.graphqlize.java.springboot;
+```kotlin {8,10,12,13}
+package org.graphqlize.kotlinspringbootdemo
 
-import org.graphqlize.java.GraphQLizeResolver;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
-
-import javax.sql.DataSource;
+import org.graphqlize.java.GraphQLizeResolver
+import org.springframework.context.annotation.Bean
+import org.springframework.stereotype.Component
+import javax.sql.DataSource
 
 @Component
-public class GraphQLizeResolverProvider {
-  private final DataSource dataSource;
-  private final GraphQLizeResolver graphQLizeResolver;
-
-  public GraphQLizeResolverProvider(DataSource dataSource) {
-    this.dataSource = dataSource;
-    graphQLizeResolver = new GraphQLizeResolver(dataSource);
-  }
+class GraphQLizeResolverProvider(dataSource : DataSource) {
+  val graphQLizeResolver = GraphQLizeResolver(dataSource)
 
   @Bean
-  public GraphQLizeResolver graphQLizeResolver() {
-    return this.graphQLizeResolver;
-  }
+  fun graphQLizeResolver() = graphQLizeResolver
 }
 ```
 
@@ -72,6 +60,7 @@ During initialization (via `constructor`), the `GraphQLizeResolver` reads the me
 :::note
 Currently, it takes around 8 to 12 seconds to initialize. I am planning to [work on it](https://github.com/graphqlize/graphqlize/issues/48) in a future release.
 :::
+
 
 ### Configuring DataSource
 
@@ -108,43 +97,35 @@ spring.datasource.password=mysql
 Make sure you are changing the above values to refer your database connection. The above example assumes that you are using the _sakila_ database created from this [JOOQ's example repository](https://github.com/jOOQ/jOOQ/tree/master/jOOQ-examples/Sakila).  
 :::
 
+
 ## Adding GraphQL Endpoint
 
-The final step is exposing an API endpoint for handling the GraphQL request. To do it, let's create a new file _GraphQLController.java_ and do the following 
+The final step is exposing an API endpoint for handling the GraphQL request. To do it, let's create a new file _GraphQLController.kt_ and do the following 
 
-* Create a POJO `GraphQLRequest` for deserializing GraphQL request from the client.
+* Create a data class `GraphQLRequest` for deserializing GraphQL request from the client.
 * Create a Controller class with a `GraphQLResolver` dependency. 
 * Create a method inside this class to handle the GraphQL request. 
 
-```java {25-28}
-package org.graphqlize.java.springboot;
+```kotlin {16,18,19,22,23}
+package org.graphqlize.kotlinspringbootdemo
 
-import org.graphqlize.java.GraphQLResolver;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonCreator
+import org.graphqlize.java.GraphQLResolver
+import org.springframework.http.*
+import org.springframework.web.bind.annotation.*
 
-class GraphQLRequest {
-  private String query;
-  private Map<String, Object> variables;
-
-  // ... Getters & Setters are ignored for brevity
-}
+data class GraphQLRequest @JsonCreator constructor(
+  val query: String,
+  val variables: Map<String, Any>?
+)
 
 @RestController
-public class GraphQLController {
-  private final GraphQLResolver graphQLResolver;
-
-  public GraphQLController(GraphQLResolver graphQLResolver) {
-    this.graphQLResolver = graphQLResolver;
-  }
+class GraphQLController(val graphQLResolver: GraphQLResolver) {
 
   @PostMapping("/graphql")
-  public ResponseEntity handle(@RequestBody GraphQLRequest graphQLRequest) {
-    String result = 
-      graphQLResolver.resolve(
-        graphQLRequest.getQuery(), 
-        graphQLRequest.getVariables());
+  fun handle(@RequestBody gqlReq: GraphQLRequest): ResponseEntity<String> {
+    val result =
+      graphQLResolver.resolve(gqlReq.query, gqlReq.variables)
 
     return ResponseEntity.ok()
             .header(HttpHeaders.CONTENT_TYPE, "application/json")
@@ -188,11 +169,11 @@ With the GraphQL endpoint up and running, the next step is introspecting the Gra
 
 To introspect, we are going to make use of [Voyager](https://github.com/APIs-guru/graphql-voyager), a tool to visualize GraphQL API as an interactive graph. Adding it to our project is easy thanks to [static content serve capability](https://spring.io/blog/2013/12/19/serving-static-web-content-with-spring-boot) of Spring Boot. 
 
-All you need to do is download this [voyager.html](https://github.com/graphqlize/graphqlize-demo/blob/master/java/spring-boot/src/main/resources/static/voyager.html) file and put it under the _src/main/resources/static_ directory. 
+All you need to do is download this [voyager.html](https://github.com/graphqlize/graphqlize-demo/blob/master/kotlin/spring-boot/src/main/resources/static/voyager.html) file and put it under the _src/main/resources/static_ directory. 
 
 When you restart the server, the Voyager will be available at _http://localhost:8080/voyager.html_. A sample output would look like [this](https://www.graphqlize.org/html/sakila-voyager.html).
 
-Then to interact with the GraphQL API, let's add the [GraphQL Playground](https://github.com/prisma-labs/graphql-playground). Like Voyager, download this [playground.html](https://github.com/graphqlize/graphqlize-demo/blob/master/java/spring-boot/src/main/resources/static/playground.html) file and put in the _static_ directory. 
+Then to interact with the GraphQL API, let's add the [GraphQL Playground](https://github.com/prisma-labs/graphql-playground). Like Voyager, download this [playground.html](https://github.com/graphqlize/graphqlize-demo/blob/master/kotlin/spring-boot/src/main/resources/static/playground.html) file and put in the _static_ directory. 
 
 This GraphQL playground will be available at _http://localhost:8080/playground.html_ after server restart. 
 
@@ -202,7 +183,7 @@ This GraphQL playground will be available at _http://localhost:8080/playground.h
 
 Congrats! You are on course to build impressive applications using GraphQLize in less time. To save yourself some more time, do refer [this documentation](/docs/graphql_schema/types-and-fields) to know more about how GraphQLize generates the GraphQL schema and the queries. 
 
-The sample code is available in [this GitHub Repository](https://github.com/graphqlize/graphqlize-demo/tree/master/java/spring-boot).
+The sample code is available in [this GitHub Repository](https://github.com/graphqlize/graphqlize-demo/tree/master/kotlin/spring-boot).
 
 :::note
 You can also customize certain default behaviours of GraphQLize in future releases.

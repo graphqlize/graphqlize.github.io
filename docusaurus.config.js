@@ -11,7 +11,7 @@ module.exports = {
     prism: {
       theme: require("prism-react-renderer/themes/github"),
       darkTheme: require("prism-react-renderer/themes/dracula"),
-      additionalLanguages: ["clojure", "groovy"]
+      additionalLanguages: ["clojure", "groovy", "kotlin", "scala"]
     },
     navbar: {
       title: "GraphQLize",
