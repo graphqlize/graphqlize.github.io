@@ -62,8 +62,8 @@ function Home() {
   const { siteConfig = {} } = context;
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />"
+      title={`${siteConfig.title} | GraphQL Made Easy`}
+      description="A JVM library for developing GraphQL API instantly from Postgres and MySQL databases"
     >
       <header className={classnames("hero hero--primary", styles.heroBanner)}>
         <div className="container">

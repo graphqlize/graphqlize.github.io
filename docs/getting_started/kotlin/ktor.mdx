@@ -4,9 +4,6 @@ title: Ktor
 sidebar_label: Ktor
 ---
 
-import Tabs from "@theme/Tabs";
-import TabItem from "@theme/TabItem";
-
 One of the core design goals of GraphQLize is not to tie to any web development framework and remain as a drop-in JVM library.
 
 Getting started with GraphQLize in [Ktor](https://ktor.io/) is simple and involves only a few steps.
@@ -48,6 +45,9 @@ dependencies {
 To initialize `GraphQLizeResolver`, we need a [DataSource](https://docs.oracle.com/javase/7/docs/api/javax/sql/DataSource.html).
 
 ### Configuring DataSource
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 <Tabs
   defaultValue="postgres"

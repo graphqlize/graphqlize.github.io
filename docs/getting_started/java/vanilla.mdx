@@ -3,8 +3,6 @@ id: vanilla
 title: Vanilla Java
 sidebar_label: Vanilla
 ---
-import Tabs from "@theme/Tabs";
-import TabItem from "@theme/TabItem";
 
 One of the core design goals of GraphQLize is not to tie to any web development framework and remain as a drop-in JVM library.
 
@@ -44,6 +42,9 @@ dependencies {
 To initialize `GraphQLizeResolver`, we need a [DataSource](https://docs.oracle.com/javase/7/docs/api/javax/sql/DataSource.html).
 
 ### Configuring DataSource
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 <Tabs
 defaultValue="postgres"

@@ -4,9 +4,6 @@ title: Types & Fields
 sidebar_label: Types & Fields
 ---
 
-import Tabs from "@theme/Tabs";
-import TabItem from "@theme/TabItem";
-
 The crux of GraphQLize is generating the GraphQL types and queries by making use of [JDBC metadata](https://docs.oracle.com/javase/7/docs/api/java/sql/DatabaseMetaData.html). This page documents the conventions and assumptions behind this automatic generation.
 
 ## Type name
@@ -35,6 +32,10 @@ The table name is alone singularized and not the schema name.
 The Field names of a generated GraphQL Type represent the column names of the corresponding database table or view. GraphQLize generates the field name by converting the column name to its _camelCase_ version.
 
 For a table like below,
+
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 <Tabs
   defaultValue="postgres"

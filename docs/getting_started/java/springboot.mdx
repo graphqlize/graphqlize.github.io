@@ -3,10 +3,6 @@ id: springboot
 title: Spring Boot
 sidebar_label: Spring Boot
 ---
-
-import Tabs from "@theme/Tabs";
-import TabItem from "@theme/TabItem";
-
 Getting started with GraphQLize in Spring-Boot is simple and straight forward.
 
 As we typically do, let's go to [Spring Initializr](https://start.spring.io/) and create a Java project with Web & JPA as dependencies. This documentation uses this [Spring Initializr template](https://start.spring.io/#!type=gradle-project&language=java&platformVersion=2.2.5.RELEASE&packaging=jar&jvmVersion=1.8&groupId=org.graphqlize.java&artifactId=spring-boot&name=spring-boot&description=Demo%20project%20for%20Spring%20Boot%20and%20GraphQLize&packageName=org.graphqlize.java.spring-boot&dependencies=web,data-jpa).
@@ -75,7 +71,11 @@ Currently, it takes around 8 to 12 seconds to initialize. I am planning to [work
 
 ### Configuring DataSource
 
-To configure the `DataSource`, let's add the following properties in the _application.properties_ file
+To configure the `DataSource`, let's add the following properties in the _application.properties_ file.
+
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 <Tabs
   defaultValue="postgres"

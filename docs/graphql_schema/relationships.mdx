@@ -3,10 +3,6 @@ id: relationships
 title: Relationships
 sidebar_label: Relationships
 ---
-
-import Tabs from "@theme/Tabs";
-import TabItem from "@theme/TabItem";
-
 GraphQLize identifies the relationships between database tables using their foreign keys, and generate appropriate relationship fields (connections) in the resulting GraphQL schema.
 
 ## One to One
@@ -74,6 +70,9 @@ type Country {
 The generated field name is the _camelCase_ version of the corresponding target table's pluralized name.
 
 If a table has multiple foreign keys to the same table as below,
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 <Tabs
   defaultValue="postgres"
