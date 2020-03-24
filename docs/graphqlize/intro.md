@@ -41,6 +41,7 @@ The actual implementation of these steps will vary based on which language (Java
 | Java     | <ul><li><a href="http://graphqlize.org/docs/getting_started/java/springboot">Spring Boot</a></li><li><a href="http://graphqlize.org/docs/getting_started/java/sparkjava">Spark Java</a></li><li><a href="https://www.graphqlize.org/docs/getting_started/java/vanilla">Vanilla Java</a></li></ul>       |
 | Kotlin   | <ul><li><a href="https://www.graphqlize.org/docs/getting_started/kotlin/springboot">Spring Boot</a></li><li><a href="https://www.graphqlize.org/docs/getting_started/kotlin/ktor">Ktor</a></li></ul>                                                                                                    |
 | Clojure  | <ul><li><a href="https://www.graphqlize.org/docs/getting_started/clojure/pedestal">Pedestal</a></li><li><a href="https://www.graphqlize.org/docs/getting_started/clojure/ring">Ring</a></li><li><a href="https://www.graphqlize.org/docs/getting_started/clojure/vanilla">Vanilla Clojure</a></li></ul> |
+| Scala    | <ul><li><a href="https://www.graphqlize.org/docs/getting_started/scala/scalatra">Scalatra</a></li></ul>                                                                                                                                                                                                 |
 
 ## Is It Production Ready?
 
