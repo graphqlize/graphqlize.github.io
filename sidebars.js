@@ -41,6 +41,11 @@ module.exports = {
             "getting_started/clojure/ring",
             "getting_started/clojure/vanilla"
           ]
+        },
+        {
+          type: "category",
+          label: "Scala",
+          items: ["getting_started/scala/scalatra"]
         }
       ]
     },

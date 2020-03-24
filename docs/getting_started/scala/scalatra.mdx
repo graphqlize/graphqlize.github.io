@@ -3,3 +3,213 @@ id: scalatra
 title: Scalatra
 sidebar_label: Scalatra
 ---
+
+One of the core design goals of GraphQLize is not to tie to any web development framework and remain as a drop-in JVM library.
+
+Getting started with GraphQLize in [Scalatra](https://scalatra.org/) is simple and involves only a few steps.
+
+## Adding Dependencies
+
+Let's start by creating new [Scalatra project](https://scalatra.org/getting-started/first-project.html) and then add the `graphqlize-java` & other required dependencies in _build.sbt_
+
+```scala {2,14}
+// ...
+resolvers += "Clojars" at "https://clojars.org/repo"
+
+libraryDependencies ++= Seq(
+  // ...
+  "org.scalatra" %% "scalatra-json" % ScalatraVersion,
+  "org.json4s"   %% "json4s-jackson" % "3.6.7",
+  // For Postgres
+  "org.postgresql" % "postgresql" % "42.2.10",
+  // For Mysql
+  "mysql" % "mysql-connector-java" % "8.0.19",
+  "com.zaxxer" % "HikariCP" % "3.4.2",
+
+  "org.graphqlize" % "graphqlize-java" % "0.1.0-alpha4"
+)
+```
+
+## Initializing GraphQLizeResolver
+
+To initialize `GraphQLizeResolver`, we need a [DataSource](https://docs.oracle.com/javase/7/docs/api/javax/sql/DataSource.html).
+
+### Configuring DataSource
+
+:::note
+Make sure you are changing the below values to refer your database connection. The below example assumes that you are using the _sakila_ database created from this [JOOQ's example repository](https://github.com/jOOQ/jOOQ/tree/master/jOOQ-examples/Sakila).  
+:::
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+<Tabs
+  defaultValue="postgres"
+  values={[
+    { label: 'Postgres', value: 'postgres' },
+    { label: 'MySQL', value: 'mysql' }
+  ]
+}>
+<TabItem value="postgres">
+
+```scala {16}
+// ScalatraBootstrap.kt
+// ...
+import com.zaxxer.hikari._
+import org.graphqlize.java.GraphQLizeResolver
+
+class ScalatraBootstrap extends LifeCycle {
+  def dataSource: HikariDataSource = {
+    val config = new HikariConfig
+     config.setJdbcUrl("jdbc:postgresql://localhost:5432/sakila")
+     config.setUsername("postgres")
+     config.setPassword("postgres")
+    new HikariDataSource(config)
+  }
+
+  override def init(context: ServletContext) {
+    val graphqlResolver = new GraphQLizeResolver(dataSource)
+    // ...
+  }
+}
+```
+
+</TabItem>
+<TabItem value="mysql">
+
+```scala {16}
+// ScalatraBootstrap.kt
+// ...
+import com.zaxxer.hikari._
+import org.graphqlize.java.GraphQLizeResolver
+
+class ScalatraBootstrap extends LifeCycle {
+  def dataSource: HikariDataSource = {
+    val config = new HikariConfig
+    config.setJdbcUrl("jdbc:mysql://localhost:3306/sakila")
+    config.setUsername("root")
+    config.setPassword("mysql123")
+    new HikariDataSource(config)
+  }
+
+  override def init(context: ServletContext) {
+    val graphqlResolver = new GraphQLizeResolver(dataSource)
+    // ...
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+:::note
+Currently, it takes around 8 to 12 seconds to initialize. I am planning to [work on it](https://github.com/graphqlize/graphqlize/issues/48) in a future release.
+:::
+
+## Adding GraphQL Endpoint
+
+The next step is adding an API to expose the GraphQL endpoint. To do it, first, add a data class to model the incoming GraphQL request.
+
+Create a new file _GraphQLizeScalatraServlet.scala_ and add the following
+
+```scala
+package org.graphqlize.scala
+
+case class GraphQLRequest(query : String, variables : Option[Map[String, Object]])
+```
+
+Then add a new router `/graphql` and deserialize the request to this `GraphQLRequest` class using Jackson. Finally, get the query & the variables from the request and invoke the `resolve` method on the initialized instance of `GraphQLizeResolver`. It returns the `result` as stringified JSON
+
+```scala {3,17-21}
+// imports are ignored for brevity 
+
+class GraphQLizeScalatraServlet(graphQLResolver : GraphQLResolver) 
+  extends ScalatraServlet with JacksonJsonSupport {
+
+  protected implicit val jsonFormats: Formats = DefaultFormats
+
+  before() {
+    contentType = formats("json")
+  }
+
+  post("/graphql") {
+    val gqlReq = 
+      JsonMethodsExt.parse(compact(render(parsedBody)))
+                    .extract[GraphQLRequest]
+
+    if (gqlReq.variables.isDefined)
+      graphQLResolver
+        .resolve(gqlReq.query, gqlReq.variables.get.asJava)
+    else
+      graphQLResolver.resolve(gqlReq.query)
+  }
+}
+
+// Patch: https://github.com/json4s/json4s/issues/329
+object JsonMethodsExt extends org.json4s.jackson.JsonMethods {
+  mapper.disable(DeserializationFeature.USE_BIG_INTEGER_FOR_INTS)
+  def parse(in: JsonInput): JValue = super.parse(in, useBigIntForLong = false)
+  def parseOpt(in: JsonInput): Option[JValue] = super.parseOpt(in, useBigIntForLong = false)
+}
+```
+
+```scala {7}
+// ScalatraBootstrap.scala
+class ScalatraBootstrap extends LifeCycle {
+  // ...
+
+  override def init(context: ServletContext) {
+    val graphqlResolver = new GraphQLizeResolver(dataSource)
+    context.mount(new GraphQLizeScalatraServlet(graphqlResolver), "/*")
+  }
+}
+```
+
+### Test Drive
+
+To do a test drive of this implementation, start the server and hit the endpoint via curl.
+
+```bash
+> curl -X POST \
+  --data '{"query": "query { actorByActorId(actorId: 1){firstName}}"}' \
+  -H "Content-Type: application/json" \
+  http://localhost:8080/graphql
+```
+
+You'll get a response like below.
+
+```json
+{
+  "data": {
+    "actorByActorId": {
+      "firstName": "PENELOPE"
+    }
+  }
+}
+```
+
+## GraphQL Playground and Voyager
+
+With the GraphQL endpoint up and running, the next step is introspecting the GraphQL schema and try out some more queries. 
+
+To introspect, we are going to make use of [Voyager](https://github.com/APIs-guru/graphql-voyager), a tool to visualize GraphQL API as an interactive graph. Adding it to our project is easy thanks to [static content serve capability](https://scalatra.org/getting-started/project-structure.html) of Scalatra. 
+
+All you need to do is download this [voyager.html](https://github.com/graphqlize/graphqlize-demo/blob/master/scala/scalatra-graphqlize-demo-web-app/src/main/webapp/voyager.html) file and put it under the _src/main/webapp_ directory. 
+
+When you restart the server, the Voyager will be available at _http://localhost:8080/voyager.html_. A sample output would look like [this](https://www.graphqlize.org/html/sakila-voyager.html).
+
+Then to interact with the GraphQL API, let's add the [GraphQL Playground](https://github.com/prisma-labs/graphql-playground). Like Voyager, download this [playground.html](https://github.com/graphqlize/graphqlize-demo/blob/master/scala/scalatra-graphqlize-demo-web-app/src/main/webapp/playground.html) file and put in the _src/main/webapp_ directory. 
+
+This GraphQL playground will be available at _http://localhost:8080/playground.html_ after server restart. 
+
+![](/img/graphql-playground.png)
+
+## Next Steps
+
+Congrats! You are on course to build impressive applications using GraphQLize in less time. To save yourself some more time, do refer [this documentation](/docs/graphql_schema/types-and-fields) to know more about how GraphQLize generates the GraphQL schema and the queries. 
+
+The sample code is available in [this GitHub Repository](https://github.com/graphqlize/graphqlize-demo/tree/master/scala/scalatra-graphqlize-demo-web-app).
+
+:::note
+You can also customize certain default behaviours of GraphQLize in future releases.
+:::
