@@ -34,7 +34,7 @@ Getting started with GraphQLize is simple and involves only a few steps.
 2. Initialize GraphQLize Resolver by providing the Java SQL [data source](https://docs.oracle.com/javase/7/docs/api/javax/sql/DataSource.html).
 3. Add a GraphQL API endpoint and use the initialized GraphQlize Resolver in the previous step.
 
-The actual implementation of these steps will vary based on which language (Java, Kotlin, Clojure) and framework (Spring Boot, Spark Java, Ktor, Pedestal, etc.). Please refer the below links for more details.
+The actual implementation of these steps will vary based on which language (Java, Kotlin, Clojure, Scala) and framework (Spring Boot, Ktor, Pedestal, Scalatra etc.). Please refer the below links for more details.
 
 | Language | Frameworks                                                                                                                                                                                                                                                                                              |
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
