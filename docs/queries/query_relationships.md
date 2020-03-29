@@ -75,6 +75,8 @@ will yield the following result
 
 ### One to Many
 
+![](/img/address_city_country_er_diagram.png)
+
 ```graphql
 query {
   # Querying `country` table by its primary key `country_id`
@@ -88,6 +90,8 @@ query {
   }
 }
 ```
+
+![](/img/employee_self_ref_er_diagram.png)
 
 ```graphql
 query {
@@ -134,6 +138,8 @@ Now, the query result would look like
 ```
 
 ### Many to Many
+
+![](/img/film_actor_er_diagram.png)
 
 ```graphql
 query {

@@ -64,7 +64,14 @@ module.exports = {
       items: [
         "queries/query-by-primary-key",
         "queries/query-table-and-view",
-        "queries/query-relationships"
+        "queries/query-relationships",
+        {
+          type: "category",
+          label: "Pagination",
+          items: [
+            "queries/pagination/limit-and-offset"
+          ]
+        }
       ]
     }
   ]

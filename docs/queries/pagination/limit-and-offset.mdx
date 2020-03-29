@@ -1,0 +1,119 @@
+---
+id: limit-and-offset
+title: Pagination using limit & offset
+sidebar_label: limit & offset
+---
+
+Using `offset` and `limit` parameters to paginate data is one of the most widely used techniques for pagination. Clients provide the `limit` parameter indicating the number of results they want per page, and the `offset` parameter to find out the results to skip.
+
+In GraphQLize, both these parameters can be used to paginate the table and view queries. 
+
+## Using Limit alone
+
+By using the limit alone, we can restrict the number of results that we want.
+
+```graphql
+query {
+  actors(limit: 2) {
+    actorId
+    firstName
+    lastName
+  }
+}
+```
+
+The above query will return two actor's details as output.
+
+```json
+{
+  "data": {
+    "actors": [
+      {
+        "actorId": 1,
+        "firstName": "PENELOPE",
+        "lastName": "GUINESS"
+      },
+      {
+        "actorId": 2,
+        "firstName": "NICK",
+        "lastName": "WAHLBERG"
+      }
+    ]
+  }
+}
+```
+
+## Using Offset with Limit 
+
+Let's assume in the above example, we want to view the next two actors. It can be acheieved using `offset` along with the `limit`.
+
+```graphql
+query {
+  actors(limit: 2, offset: 2) {
+    actorId
+    firstName
+    lastName
+  }
+}
+```
+
+It returns
+
+```json
+{
+  "data": {
+    "actors": [
+      {
+        "actorId": 3,
+        "firstName": "ED",
+        "lastName": "CHASE"
+      },
+      {
+        "actorId": 4,
+        "firstName": "JENNIFER",
+        "lastName": "DAVIS"
+      }
+    ]
+  }
+}
+```
+
+:::note
+In MySQL, `offset` [can not be used alone](https://dev.mysql.com/doc/refman/8.0/en/select.html#id4651990).
+:::
+
+## Paginate Nested Objects
+  
+  
+GraphQLize supports using `limit` & `offset` in the nested objects as well. 
+
+### One to Many Relationships
+
+![](/img/address_city_country_er_diagram.png)
+
+```graphql {4}
+query {
+  countryByCountryId(countryId: 6) {
+    country
+    cities(limit: 2, offset : 4) {
+      city
+    }
+  }
+}
+```
+
+
+### Many to Many Relationships
+
+![](/img/film_actor_er_diagram.png)
+
+```graphql {4}
+query {
+  actorByActorId(actorId: 1) {
+    firstName
+    films(limit: 5, offset: 5) {
+      title
+    }
+  }
+}
+```
