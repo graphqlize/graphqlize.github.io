@@ -4,9 +4,11 @@ title: Pagination using limit & offset
 sidebar_label: limit & offset
 ---
 
-Using `offset` and `limit` parameters to paginate data is one of the most widely used techniques for pagination. Clients provide the `limit` parameter indicating the number of results they want per page, and the `offset` parameter to find out the results to skip.
+Using `offset` and `limit` parameters to paginate data is one of the most widely used techniques for pagination.
 
-In GraphQLize, both these parameters can be used to paginate the table and view queries. 
+Clients provide the `limit` parameter indicating the number of results they want per page, and the `offset` parameter to specify the results to skip.
+
+GraphQLize supports these parameters to paginate via table or view queries. It also supports pagination of nested objects.
 
 ## Using Limit alone
 
@@ -22,7 +24,7 @@ query {
 }
 ```
 
-The above query will return two actor's details as output.
+The above query returns two actor's details as output.
 
 ```json
 {
@@ -45,7 +47,7 @@ The above query will return two actor's details as output.
 
 ## Using Offset with Limit 
 
-Let's assume in the above example, we want to view the next two actors. It can be acheieved using `offset` along with the `limit`.
+Let's assume in the above example we want to view the next two actors. We can achieve it by using `offset` along with the `limit`.
 
 ```graphql
 query {
@@ -79,12 +81,12 @@ It returns
 ```
 
 :::note
-In MySQL, `offset` [can not be used alone](https://dev.mysql.com/doc/refman/8.0/en/select.html#id4651990).
+MySQL [doesn't support](https://dev.mysql.com/doc/refman/8.0/en/select.html#id4651990) using the `offset` paramater alone.
 :::
 
 ## Paginate Nested Objects
   
-  
+
 GraphQLize supports using `limit` & `offset` in the nested objects as well. 
 
 ### One to Many Relationships
