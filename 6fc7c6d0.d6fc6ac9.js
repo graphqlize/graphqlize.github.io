@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[21],{125:function(o){o.exports=JSON.parse('{"allTagsPath":"/blog/tags","slug":"clojure","name":"clojure","count":1,"permalink":"/blog/tags/clojure"}')}}]);
