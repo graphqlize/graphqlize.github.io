@@ -1,0 +1,182 @@
+---
+id: graphqlize-update-1
+title: GraphQLize Update (#1) - Pagination, Scalar Types, Scala & Kotlin Support
+author: Tamizhvendan S
+author_title: Author, GraphQLize
+author_url: https://github.com/tamizhvendan
+author_image_url: https://avatars1.githubusercontent.com/u/1128916?v=4
+tags: [announcement, clojure, java, graphql, postgres, mysql, scala, kotlin]
+---
+
+Hello World, 
+
+Thank you, everyone, for the words of praise and encouragement during the [announcement of GraphQLize](https://www.graphqlize.org/blog/announcing-graphqlize-alpha) two weeks ago. I am glad to see 100+ ⭐️s in GitHub. [GraphQLize](https://github.com/graphqlize/graphqlize) is my first-ever OSS project which achieved this tiny milestone. The journey just began, and a long way to go!
+
+I am working on a biweekly iteration and as planned completed by the first iteration of GraphQLize. In this blog post, I am going to share what's new in GraphQLize and what is in the pipeline for the next iteration. 
+
+## Pagination via offset and limit
+
+Using `offset` and `limit` parameters to paginate data is one of the most widely used techniques for pagination. GraphQLize supports these parameters to paginate the `table` or `view` queries. 
+
+For a table like below,
+
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+<Tabs
+  defaultValue="postgres"
+  values={[
+    { label: 'Postgres', value: 'postgres' },
+    { label: 'MySQL', value: 'mysql' }
+  ]
+}>
+<TabItem value="postgres">
+
+```sql
+CREATE TABLE actor (
+  actor_id SERIAL PRIMARY KEY,
+  first_name character varying(45) NOT NULL,
+  last_name character varying(45) NOT NULL
+);
+```
+
+</TabItem>
+<TabItem value="mysql">
+
+```sql
+CREATE TABLE actor (
+  actor_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  first_name VARCHAR(45) NOT NULL,
+  last_name VARCHAR(45) NOT NULL,
+  PRIMARY KEY  (actor_id)
+)
+```
+
+</TabItem>
+
+</Tabs>
+
+GraphQLize provides out of the box GraphQL API with pagination supported via `offset` and `limit`, and we can query the `actor` table like below
+
+```graphql
+query {
+  # highlight-next-line
+  actors(limit: 2, offset: 2) {
+    actorId
+    firstName
+    lastName
+  }
+}
+```
+
+The JSON result for the above query would look like 
+
+```json
+{
+  "data": {
+    "actors": [
+      {
+        "actorId": 3,
+        "firstName": "ED",
+        "lastName": "CHASE"
+      },
+      {
+        "actorId": 4,
+        "firstName": "JENNIFER",
+        "lastName": "DAVIS"
+      }
+    ]
+  }
+}
+```
+
+## Pagination of nested objects
+
+GraphQLize also supports pagination of nested objects.
+
+### One to Many Relationships
+
+![](/img/address_city_country_er_diagram.png)
+
+```graphql {4}
+query {
+  countryByCountryId(countryId: 6) {
+    country
+    cities(limit: 2, offset : 4) {
+      city
+    }
+  }
+}
+```
+
+
+### Many to Many Relationships
+
+![](/img/film_actor_er_diagram.png)
+
+```graphql {4}
+query {
+  actorByActorId(actorId: 1) {
+    firstName
+    films(limit: 5, offset: 5) {
+      title
+    }
+  }
+}
+```
+
+## Custom Scalar Types
+
+The latest release of GraphQLize adds supports for the following custom scalar types in addition to the standard GraphQL [scalar types](https://graphql.org/learn/schema/#scalar-types).
+
+* [Long](/docs/graphql_schema/custom-scalar-types#long)
+* [BigDecimal](/docs/graphql_schema/custom-scalar-types#bigdecimal)
+* [Date](/docs/graphql_schema/custom-scalar-types#date)
+* [Time](/docs/graphql_schema/custom-scalar-types#time)
+* [TimeWithTimeZone](/docs/graphql_schema/custom-scalar-types#timewithtimezone)
+* [DateTime](/docs/graphql_schema/custom-scalar-types#datetime)
+* [DateTimeWithTimeZone](/docs/graphql_schema/custom-scalar-types#datetimwithtimezone)
+
+> Refer the respective documentation to more the about the database column types that these scalar types map to.
+
+
+## Scala & Kotlin Support
+
+One of the core design goals of GraphQLize is not to tie to any web development framework and remain as a drop-in library in any JVM language projects. 
+
+Here is the new documentation of how to use GraphQLize in Scala & Kotlin.
+
+* Scala
+  - [Scalatra](/docs/getting_started/scala/scalatra)
+* Kotlin
+  - [Spring Boot](/docs/getting_started/kotlin/springboot)
+  - [Ktor](/docs/getting_started/kotlin/ktor)
+
+:::note
+I am looking for some help on creating a sample web application using Play framework in Scala. If you'd look like to contribute, feel free to create a pull request. Thanks in advance :)
+:::
+
+## What's Next?
+
+There are close to [35+ feature enhancements](https://github.com/graphqlize/graphqlize/issues?q=is%3Aissue+is%3Aopen+sort%3Acreated-asc) that I am planning for the v1.0 (production-ready) release. For the next iteration, I am planning to work on the below ones.
+
+* [Boolean data type support in MySQL](https://github.com/graphqlize/graphqlize/issues/10)
+* [Add Sorting](https://github.com/graphqlize/graphqlize/issues/7)
+* [Add Sorting in nested objects](https://github.com/graphqlize/graphqlize/issues/18)
+* [Add Equality Filter For Numeric Types](https://github.com/graphqlize/graphqlize/issues/19)
+
+> If you are wondering why only four, I am developing GraphQLize in addition to my day job (and lockdown), and I don't want to commit more and deliver less :)
+
+You can keep track of the progress by
+
+- Following the [GraphQLize Twitter account](https://twitter.com/graphqlize)
+- Joining [GraphQLize's Discord](https://discord.gg/akkdPqf)
+- Subscribing to [GraphQLize's newsletter](https://tinyletter.com/graphqlize-org)
+
+⭐️ If you like GraphQLize, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/graphqlize/graphqlize">GitHub</a>! ⭐️
+
+That's all!
+
+Cheers,  
+Tamizh
