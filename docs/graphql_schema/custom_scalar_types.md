@@ -41,9 +41,36 @@ An arbitrary-precision signed decimal number (java.math.BigDecimal)
 | Postgres      | `numeric`, `decimal`  |
 | MySQL         | `numeric`, `decimal`  |
 
+
+## Date
+
+A date without a time-zone in the ISO-8601 calendar system, such as `2007-12-03` (`java.time.LocalDate`).
+
+| Database Type | Column Type(s)                                                          |
+| ------------- | -------------------------------------------------------------------- |
+| Postgres      | `date`   |
+| MySQL         | `DATE` |
+
+## Time
+
+A time without a time-zone in the ISO-8601 calendar system, such as `10:15:30` (`java.time.LocalTime`).
+
+| Database Type | Column Type(s)                                                          |
+| ------------- | -------------------------------------------------------------------- |
+| Postgres      | `time`, `time without time zone`   |
+| MySQL         | `TIME` |
+
+## TimeWithTimeZone
+
+A time with an offset from UTC/Greenwich in the ISO-8601 calendar system, such as `10:15:30+01:00` (`java.time.OffsetTime`).
+
+| Database Type | Column Type(s)                                                          |
+| ------------- | -------------------------------------------------------------------- |
+| Postgres      | `timetz`, `time with time zone`   |
+
 ## DateTime 
 
-A date-time without a time-zone in the ISO-8601 calendar system, such as `2007-12-03T10:15:30`. 
+A date-time without a time-zone in the ISO-8601 calendar system, such as `2007-12-03T10:15:30` (`java.time.LocalDateTime`). 
 
 | Database Type | Column Type(s)                                                          |
 | ------------- | -------------------------------------------------------------------- |
@@ -52,7 +79,7 @@ A date-time without a time-zone in the ISO-8601 calendar system, such as `2007-1
 
 ## DateTimeWithTimeZone
 
-A date-time with an offset from UTC/Greenwich in the ISO-8601 calendar system, such as `2007-12-03T10:15:30+01:00`.
+A date-time with an offset from UTC/Greenwich in the ISO-8601 calendar system, such as `2007-12-03T10:15:30+01:00` (`java.time.OffsetDateTime`).
 
 | Database Type | Column Type(s)                                                  |
 | ------------- | -------------------------------------------------------------------- |
