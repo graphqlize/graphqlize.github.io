@@ -98,22 +98,26 @@ During the schema generation, GraphQLize checks the column's database type and c
 
 | GraphQL Scalar Type | Data Type(s) |
 | ------------------- | --------- |
-| `Int` | `integer`, `int`, `int2`  `int4`, `bigint`, `int8`, `bigserial`, `serial8`, `smallint`, `smallserial`, `serial`, `serial2`, `serial4`|
-| `Float` | `real`, `float4`, `float8`, `double precision`, `money`, `numeric`|
-| `String` | `bit`, `bit varying`, `char`, `character varying`, `varchar`, `citext`, `bpchar`, `macaddr8`, `text`  |
-| `Boolean` | `boolean`, `bool` |
-| `UUID` | `uuid` |
+| Int | `integer`, `int`, `int2`  `int4`, `bigint`, `int8`, `bigserial`, `serial8`, `smallint`, `smallserial`, `serial`, `serial2`, `serial4`|
+| Float | `real`, `float4`, `float8`, `double precision`|
+| String | `bit`, `bit varying`, `char`, `character varying`, `varchar`, `citext`, `bpchar`, `macaddr8`, `text`, `money`  |
+| Boolean | `boolean`, `bool` |
+| [UUID](/docs/graphql_schema/custom-scalar-types#uuid) | `uuid` |
+| [DateTime](/docs/graphql_schema/custom-scalar-types#datetime) | `timestamp`,`timestamp without time zone` |
+| [DateTimeWithTimeZone](/docs/graphql_schema/custom-scalar-types#datetimwithtimezone) | `timestamptz`,`timestamp with time zone` |
+| [BigDecimal](/docs/graphql_schema/custom-scalar-types#bigdecimal) | `numeric`,`decimal` |
 
 </TabItem>
 <TabItem value="mysql">
 
 | GraphQL Scalar Type | Data Type(s) |
 | --------------- | ----------------- |
-| `Int` | `SMALLINT`, `MEDIUMINT`, `INT`, `TINYINT UNSIGNED`, `SMALLINT UNSIGNED`, `MEDIUMINT UNSIGNED`, `INT UNSIGNED,` `BIGINT`, `YEAR` |
-| `Float` | `DECIMAL`, `NUMERIC`, `REAL`, `FLOAT`, `DOUBLE` |
-| `String` | `CHAR`, `VARCHAR`, `TINYTEXT`, `TEXT`, `MEDIUMTEXT`, `LONGTEXT`, `ENUM`, `SET`, `BINARY`, `VARBINARY`, `TINYBLOB,` `BLOB`, `LONGBLOB`, `BIT` |
-| `Boolean` | [Yet to support](https://github.com/graphqlize/graphqlize/issues/10) |
-| `UUID` | [Yet to support](https://github.com/graphqlize/graphqlize/issues/11) |
+| Int | `SMALLINT`, `MEDIUMINT`, `INT`, `TINYINT UNSIGNED`, `SMALLINT UNSIGNED`, `MEDIUMINT UNSIGNED`, `INT UNSIGNED,` `BIGINT`, `YEAR` |
+| Float | `DECIMAL`, `NUMERIC`, `REAL`, `FLOAT`, `DOUBLE` |
+| String | `CHAR`, `VARCHAR`, `TINYTEXT`, `TEXT`, `MEDIUMTEXT`, `LONGTEXT`, `ENUM`, `SET`, `BINARY`, `VARBINARY`, `TINYBLOB,` `BLOB`, `LONGBLOB`, `BIT` |
+| Boolean | [Yet to support](https://github.com/graphqlize/graphqlize/issues/10) |
+| UUID | [Yet to support](https://github.com/graphqlize/graphqlize/issues/11) |
+| [DateTime](/docs/graphql_schema/custom-scalar-types#datetime) | `DATETIME`, `TIMESTAMP` |
 
 </TabItem>
 
