@@ -4,10 +4,17 @@
         <title>GraphQLize Blog</title>
         <link>https://www.graphqlize.org/blog</link>
         <description>GraphQLize Blog</description>
-        <lastBuildDate>Wed, 18 Mar 2020 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Sat, 04 Apr 2020 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <copyright>Copyright © 2020 GraphQLize.</copyright>
+        <item>
+            <title><![CDATA[GraphQLize Update (#1) - Pagination, Scalar Types, Scala & Kotlin Support]]></title>
+            <link>https://www.graphqlize.org/blog/graphqlize-update-1</link>
+            <guid>graphqlize-update-1</guid>
+            <pubDate>Sat, 04 Apr 2020 00:00:00 GMT</pubDate>
+            <description><![CDATA[Hello World, ]]></description>
+        </item>
         <item>
             <title><![CDATA[Announcing GraphQLize Alpha]]></title>
             <link>https://www.graphqlize.org/blog/announcing-graphqlize-alpha</link>
