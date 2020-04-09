@@ -119,7 +119,7 @@ During the schema generation, GraphQLize checks the column's database type and c
 | Int | `SMALLINT`, `MEDIUMINT`, `INT`, `TINYINT UNSIGNED`, `SMALLINT UNSIGNED`, `MEDIUMINT UNSIGNED`, `YEAR` |
 | Float | `REAL`, `FLOAT`, `DOUBLE` |
 | String | `CHAR`, `VARCHAR`, `TINYTEXT`, `TEXT`, `MEDIUMTEXT`, `LONGTEXT`, `ENUM`, `SET`, `BINARY`, `VARBINARY`, `TINYBLOB,` `BLOB`, `LONGBLOB`, `BIT` |
-| Boolean | [Yet to support](https://github.com/graphqlize/graphqlize/issues/10) |
+| Boolean | `BIT(1)`, `TINYINT(1)` |
 | UUID | [Yet to support](https://github.com/graphqlize/graphqlize/issues/11) |
 | [Long](/docs/graphql_schema/custom-scalar-types#long) | `INT UNSIGNED`,`BIGINT` |
 | [BigDecimal](/docs/graphql_schema/custom-scalar-types#bigdecimal) | `DECIMAL`, `NUMERIC` |
