@@ -71,7 +71,8 @@ module.exports = {
           items: [
             "queries/pagination/limit-and-offset"
           ]
-        }
+        },
+        "queries/sorting-query-results"
       ]
     }
   ]

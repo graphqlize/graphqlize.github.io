@@ -1,0 +1,48 @@
+---
+id: sorting-query-results
+title: Sorting Query Results
+sidebar_label: Sorting Query Results
+---
+
+GraphQLize enables sorting the query results using the `orderBy` argument. By default any of the table columns can be used to sort the query results. 
+
+
+## Sorting by single column
+
+```graphql
+query languagesSortedByName {
+  # sorts using the `name` column in the `language` table
+  # highlight-next-line
+  languages(orderBy: {name: ASC}) {
+    name
+  }
+}
+```
+
+If you'd like to sort it descending order, just change `ASC` to `DESC`. 
+
+```graphql
+query languagesSortedByNameInDescOrder {
+  # highlight-next-line
+  languages(orderBy: {name: DESC}) {
+    name
+  }
+}
+```
+
+## Sorting by multiple columns
+
+You can sort by multiple columns as well!
+
+
+```graphql
+query {
+  # sorts the `actor` table by the `first_name` column 
+  # and then by `last_name` column in descending order
+  # highlight-next-line
+  actors(orderBy: {firstName: ASC, lastName: DESC}) {
+    firstName
+    lastName
+  }
+}
+```
