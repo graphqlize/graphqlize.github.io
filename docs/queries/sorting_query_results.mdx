@@ -46,3 +46,37 @@ query {
   }
 }
 ```
+
+## Sorting nested objects
+
+GraphQLize also supports sorting nested objects. 
+
+```graphql
+query {
+  countryByCountryId(countryId: 2) {
+    country
+    # sorting one-to-many relationship
+    # highlight-next-line
+    cities(orderBy: {city: DESC}) {
+      city
+    }
+  }
+}
+```
+
+```graphql
+query {
+  actorByActorId(actorId: 148) {
+    firstName
+    # sorting many-to-many relationship
+    # highlight-next-line
+    films(orderBy: {title: DESC}) {
+      title
+    }
+  }
+}
+```
+
+:::note
+Currently, sorting nested objects in MySQL is not supported. [It'll be fixed](https://github.com/graphqlize/graphqlize/issues/52) in a later release. 
+:::
