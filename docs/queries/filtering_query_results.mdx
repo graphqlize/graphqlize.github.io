@@ -1,0 +1,185 @@
+---
+id: filtering-query-results
+title: Filtering Query Results
+sidebar_label: Filtering Query Results
+---
+
+You can filter the query results in GraphQLize using the `where` argument. 
+
+## Comparison Operators
+
+### Equal To
+
+```graphql
+query {
+  # highlight-next-line
+  cities(where: {cityId: {eq: 3}}) {
+    city
+  }
+}
+```
+### Not Equal To
+
+```graphql
+query {
+  # highlight-next-line
+  languages(where: {name: {neq: "English"}}) {
+    name
+  }
+}
+```
+
+### Greater Than
+
+```graphql
+query {
+  # highlight-next-line
+  payments(where: {amount: {gt: 11.99}}) {
+    rentalId
+    amount
+  }
+}
+```
+
+### Greater Than Or Equal To
+
+```graphql
+query {
+  # highlight-next-line
+  payments(where: {amount: {gte: 11.99}}) {
+    rentalId
+    amount
+  }
+}
+```
+### Less Than 
+
+```graphql
+query {
+  # highlight-next-line
+  payments(where: {amount: {lt: 6.99}}) {
+    rentalId
+    amount
+  }
+}
+```
+### Less Than Or Equal To
+
+```graphql
+query {
+  # highlight-next-line
+  payments(where: {amount: {lte: 6.99}}) {
+    rentalId
+    amount
+  }
+}
+```
+
+### Between
+
+```graphql
+query {
+  # highlight-next-line
+  payments(where: {paymentDate: {between: {from: "2005-08-23T21:00:00", to: "2005-08-23T21:03:00"}}}) {
+    rentalId
+  }
+}
+```
+
+### Is Null
+
+```graphql
+query {
+  # highlight-next-line
+  employees(where: {employeeReportsToId: {isNull: true}}) {
+    firstName
+    lastName
+  }
+}
+```
+
+### Is Not Null
+
+```graphql
+query {
+  # highlight-next-line
+  employees(where: {employeeReportsToId: {isNotNull: true}}) {
+    firstName
+    lastName
+  }
+}
+```
+
+### IN
+
+```graphql
+query {
+  payments(where: {customerId: {in: [1, 2]}}) {
+    paymentId
+    amount
+  }
+}
+```
+### NOT IN
+
+```graphql
+query {
+  payments(where: {customerId: {notIn: [1, 2]}}) {
+    paymentId
+    amount
+  }
+}
+```
+
+### String Comparison
+
+#### Like
+
+```graphql
+query {
+  # highlight-next-line
+  countries(where: {country: {like: "A%"}}) {
+    country
+  }
+}
+```
+#### Not Like
+```graphql
+query {
+  # highlight-next-line
+  countries(where: {country: {notLike: "A%"}}) {
+    country
+  }
+}
+```
+
+## Filtering nested objects
+
+GraphQLize also supports filtering nested objects. 
+
+```graphql
+query {
+  countryByCountryId(countryId: 2) {
+    country
+    # filter one-to-many relationship
+    # highlight-next-line
+    cities(where: {city: {like: "B%"}}) {
+      cityId
+      city
+    }
+  }
+}
+```
+
+```graphql
+query {
+  actorByActorId(actorId: 148) {
+    firstName
+    # filter many-to-many relationship
+    # highlight-next-line
+    films(where: {title: {like: "S%"}}) {
+      title
+    }
+  }
+}
+```
