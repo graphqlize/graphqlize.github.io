@@ -1,0 +1,207 @@
+---
+id: graphqlize-update-2
+title: GraphQLize Update (#2) - Supports Sorting, Filtering & MySQL Boolean Types
+author: Tamizhvendan S
+author_title: Author, GraphQLize
+author_url: https://github.com/tamizhvendan
+author_image_url: https://avatars1.githubusercontent.com/u/1128916?v=4
+tags: [announcement, clojure, java, graphql, postgres, mysql, scala, kotlin]
+---
+
+Hello World, 
+
+GraphQLize is [one month old now](https://www.graphqlize.org/blog/announcing-graphqlize-alpha) 🎂, and it is getting better day by day. Almost 50% of the planned features are complete 🙌. 
+
+As usual in this blog post, I am going to share what's new in GraphQLize and what is in the pipeline for the next two weeks.
+
+Here we go!
+
+<!--truncate-->
+
+## Sorting 
+
+GraphQLize now enables sorting the query results using the `orderBy` argument. By default, you can use any of the table columns to sort the query results. In future, we can control this behaviour.
+
+```graphql
+query languagesSortedByName {
+  # sorts using the `name` column in the `language` table
+  # highlight-next-line
+  languages(orderBy: {name: ASC}) {
+    name
+  }
+}
+```
+
+If you'd like to sort it in descending order, replace `ASC` with `DESC`. 
+
+```graphql
+query languagesSortedByNameInDescOrder {
+  # highlight-next-line
+  languages(orderBy: {name: DESC}) {
+    name
+  }
+}
+```
+
+We can sort by multiple columns as well,
+
+```graphql
+query {
+  # sorts the `actor` table by the `first_name` column 
+  # and then by `last_name` column in descending order
+  # highlight-next-line
+  actors(orderBy: {firstName: ASC, lastName: DESC}) {
+    firstName
+    lastName
+  }
+}
+```
+
+GraphQLize also supports sorting nested objects. 
+
+```graphql
+query {
+  countryByCountryId(countryId: 2) {
+    country
+    # sorting one-to-many relationship
+    # highlight-next-line
+    cities(orderBy: {city: DESC}) {
+      city
+    }
+  }
+}
+```
+
+```graphql
+query {
+  actorByActorId(actorId: 148) {
+    firstName
+    # sorting many-to-many relationship
+    # highlight-next-line
+    films(orderBy: {title: DESC}) {
+      title
+    }
+  }
+}
+```
+
+:::note
+Currently, sorting nested objects in MySQL is not supported. [It'll be fixed](https://github.com/graphqlize/graphqlize/issues/52) in a later release. 
+:::
+
+## Filtering
+
+Filtering is another critical feature that was released in the last iteration. Like `orderBy` in sorting, we have the `where` argument using which we can specify the `filter` condition.
+
+Here are some of the examples of using `eq`, `in`, `isNull` and `between` filter conditions.
+
+```graphql
+query {
+  # highlight-next-line
+  cities(where: {cityId: {eq: 3}}) {
+    city
+  }
+}
+```
+
+```graphql
+query {
+  # highlight-next-line
+  payments(where: {customerId: {in: [1, 2]}}) {
+    paymentId
+    amount
+  }
+}
+```
+
+```graphql
+query {
+  # highlight-next-line
+  employees(where: {employeeReportsToId: {isNull: true}}) {
+    firstName
+    lastName
+  }
+}
+```
+
+```graphql
+query {
+  # highlight-next-line
+  payments(where: {paymentDate: {between: {from: "2005-08-23T21:00:00", to: "2005-08-23T21:03:00"}}}) {
+    rentalId
+  }
+}
+```
+
+For the detailed set of supported filter conditions, you can check out [this documentation](https://www.graphqlize.org/docs/queries/filtering-query-results).
+
+We can filter the nested objects also. 
+
+```graphql
+query {
+  countryByCountryId(countryId: 2) {
+    country
+    # filter one-to-many relationship
+    # highlight-next-line
+    cities(where: {city: {like: "B%"}}) {
+      cityId
+      city
+    }
+  }
+}
+```
+
+```graphql
+query {
+  actorByActorId(actorId: 148) {
+    firstName
+    # filter many-to-many relationship
+    # highlight-next-line
+    films(where: {title: {like: "S%"}}) {
+      title
+    }
+  }
+}
+```
+
+## MySQL Boolean Data Type Support
+
+The last feature that was developed as part of the previous iteration is the support for MySQL `boolean` data type. 
+
+GraphQLize treats the column types `BIT(1)` and `TINYINT(1)` as the `Boolean` GraphQL scalar type. 
+
+Here is an example of using it in a filter condition to filter only `active` customers. 
+
+```graphql
+query { 
+  # highlight-next-line
+  customers(where: {active: {eq: true}}) { 
+    firstName 
+  } 
+}
+```
+
+## What's Next?
+
+I am planning to take a short break for two days to sustain my progress and energy level. Then, I am going to work on the following issues for the next two weeks. 
+
+* Supporting [and](https://github.com/graphqlize/graphqlize/issues/28), [or](https://github.com/graphqlize/graphqlize/issues/29) and [not](https://github.com/graphqlize/graphqlize/issues/34) operators in the filter conditions.
+
+* Ability to filter based on the nested object's fields - [GitHub Issue #33](https://github.com/graphqlize/graphqlize/issues/33)
+
+* Filter based on the existence of nested objects - [GitHub Issue #38](https://github.com/graphqlize/graphqlize/issues/38)
+
+> I am keeping this iteration light as I may not be able to spend some good quality time outside my work hours. In case, if I am free, I would take some more features around filtering. Let's see how it goes 🤞.
+
+You can keep track of the progress by
+
+- Following the [GraphQLize Twitter account](https://twitter.com/graphqlize)
+- Joining [GraphQLize's Discord](https://discord.gg/akkdPqf)
+- Subscribing to [GraphQLize's newsletter](https://tinyletter.com/graphqlize-org)
+
+⭐️ If you like GraphQLize, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/graphqlize/graphqlize">GitHub</a>! ⭐️
+
+That's all!
+
+Cheers,  
+Tamizh
