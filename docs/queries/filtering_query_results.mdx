@@ -114,6 +114,7 @@ query {
 
 ```graphql
 query {
+  # highlight-next-line
   payments(where: {customerId: {in: [1, 2]}}) {
     paymentId
     amount
@@ -124,6 +125,7 @@ query {
 
 ```graphql
 query {
+  # highlight-next-line
   payments(where: {customerId: {notIn: [1, 2]}}) {
     paymentId
     amount
