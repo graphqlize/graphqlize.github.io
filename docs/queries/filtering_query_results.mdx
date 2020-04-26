@@ -155,6 +155,68 @@ query {
 }
 ```
 
+## Logical Operators
+
+### AND
+
+```graphql
+query {
+  # payments of a customer with the id `1` 
+  # and amount greater than `5.99`
+  # highlight-next-line
+  payments(where: {and: {customerId: {eq: 1}, amount: {gt: 5.99}}}) {
+    paymentId
+    amount
+  }
+}
+```
+
+`and` also supports list of conditions. 
+
+The above query can be rewritten as
+
+```graphql
+query {
+  # highlight-next-line 
+  payments(where: {and: [{customerId: {eq: 1}, amount: {gt: 5.99}}]}) {
+    paymentId
+    amount
+  }
+}
+```
+
+### OR
+
+`or` is similar to `and` in syntax. It accepts both a single condition or a list of conditions. 
+
+```graphql
+query {
+  # languages with the name either "English" or "French"
+  # highlight-next-line
+  languages(where: {or: [{name: {eq: "English"}}, {name: {eq: "French"}}]}) {
+    languageId
+    name
+  }
+}
+```
+
+### NOT
+
+Using the `not` operator we can invert the filter condition. 
+
+```graphql
+query {
+  # languages with the name except "English" or "French"
+  # highlight-next-line
+  languages(where: {not: {or: [{name: {eq: "English"}}, {name: {eq: "French"}}]}}) {
+    languageId
+    name
+  }
+}
+```
+
+
+
 ## Filtering nested objects
 
 GraphQLize also supports filtering nested objects. 
