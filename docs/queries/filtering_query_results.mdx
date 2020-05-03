@@ -8,7 +8,7 @@ You can filter the query results in GraphQLize using the `where` argument.
 
 ## Comparison Operators
 
-### Equal To
+### Equal To, Not Equal To
 
 ```graphql
 query {
@@ -18,7 +18,6 @@ query {
   }
 }
 ```
-### Not Equal To
 
 ```graphql
 query {
@@ -29,7 +28,7 @@ query {
 }
 ```
 
-### Greater Than
+### Greater Than, Greater Than Or Equal To
 
 ```graphql
 query {
@@ -40,9 +39,6 @@ query {
   }
 }
 ```
-
-### Greater Than Or Equal To
-
 ```graphql
 query {
   # highlight-next-line
@@ -52,7 +48,7 @@ query {
   }
 }
 ```
-### Less Than 
+### Less Than, Less Than Or Equal To
 
 ```graphql
 query {
@@ -63,7 +59,6 @@ query {
   }
 }
 ```
-### Less Than Or Equal To
 
 ```graphql
 query {
@@ -86,7 +81,7 @@ query {
 }
 ```
 
-### Is Null
+### Is Null, Is Not Null
 
 ```graphql
 query {
@@ -98,8 +93,6 @@ query {
 }
 ```
 
-### Is Not Null
-
 ```graphql
 query {
   # highlight-next-line
@@ -110,7 +103,7 @@ query {
 }
 ```
 
-### IN
+### IN, NOT IN
 
 ```graphql
 query {
@@ -121,7 +114,6 @@ query {
   }
 }
 ```
-### NOT IN
 
 ```graphql
 query {
@@ -215,7 +207,93 @@ query {
 }
 ```
 
+## Filter by nested object(s)
 
+We can filter the resulting objects based on the fields of a nested object(s).
+
+### One to One
+
+![](/img/address_city_country_er_diagram.png)
+
+For example, to get all the cities of a county using the country' name in the above schema, We can query it as 
+
+```graphql
+query {
+  # highlight-next-line
+  cities(where: {country: {country: {eq : "Algeria"}}}) {
+    cityId
+    city
+  }
+}
+```
+
+### One to Many
+
+If the nested object has `one-to-many` relationship with its parent, the filter condition yield the results if **at-least one** of the nested object's field(s) satisfy the condition.
+
+For the above schema, we can get a list of countries which has at-least one city that starts with `Ab` using the below query.
+
+```graphql
+query {
+  # returns countries which has at-least one city 
+  # with the name like 'AB%'
+  # highlight-next-line
+  countries(where: {cities: {city: {like: "Ab%"}}}) {
+    countryId
+    country
+  }
+}
+```
+
+### Many to Many
+
+A filter based on a nested object with the `many-to-many` relationship behaves the same as that of `one-to-many`.
+
+![](/img/film_actor_er_diagram.png)
+
+For the above schema, to get the actors who are part of **at-lease** one film which has the word `LIFE` in its title.
+
+```graphql
+query {
+  # highlight-next-line
+  actors(where: {films: {title: {:like "%LIFE%"}}}) {
+    firstName
+    lastName
+  }
+}
+```
+
+#### Filter to check all objects satisfy a condition.
+
+Let's assume that we have a schema like below 
+
+![](/img/author_course_er_diagram.png)
+
+To filter authors who has **at-least** one course with the rating `5`, we can achieve it using the following query.
+
+```graphql
+query {
+  # highlight-next-line
+  authors(where: {courses : {rating: {eq: 5}}}) {
+    firstName
+    lastName
+  }
+}
+```
+
+If we want to filter only the authors who has got the rating `5` in **all** their courses, we can achieve it by
+
+```graphql
+query {
+  # highlight-next-line
+  authors(where: {not: {courses : {rating: {neq: 5}}}}) {
+    firstName
+    lastName
+  }
+}
+```
+
+We are making use of [SQL anti-join](https://gerardnico.com/data/type/relation/sql/anti_join) by inverting the whole condition using `not` and complementing the inner condition using its reverse (`neq` in the place of `eq`).
 
 ## Filtering nested objects
 
