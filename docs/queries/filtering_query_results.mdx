@@ -263,8 +263,6 @@ query {
 }
 ```
 
-#### Filter to check all objects satisfy a condition.
-
 Let's assume that we have a schema like below 
 
 ![](/img/author_course_er_diagram.png)
@@ -293,7 +291,34 @@ query {
 }
 ```
 
-We are making use of [SQL anti-join](https://gerardnico.com/data/type/relation/sql/anti_join) by inverting the whole condition using `not` and complementing the inner condition using its reverse (`neq` in the place of `eq`).
+We are making use of [SQL anti-join](https://gerardnico.com/data/type/relation/sql/anti_join) here by inverting the whole condition using `not` and complementing the inner condition using its reverse (`neq` in the place of `eq`).
+
+### Existence Check
+
+GraphQLize provides a special filter parameter `have` to filter based on the existence of a child object. For example, in the above schema, if we'd like to filter only the authors who have courses, it can be achieved using the following query.
+
+```graphql
+query {
+  # highlight-next-line
+  authors(where: {have: courses}) {
+    firstName
+    lastName
+  }
+}
+```
+
+Suppose, if we want to filter authors who don't have `courses`, we can make use of the `not` in addition to `have` in the filter.
+
+```graphql
+query {
+  # highlight-next-line
+  authors(where: {not: {have:courses}}) {
+    firstName
+    lastName
+  }
+}
+```
+
 
 ## Filtering nested objects
 
