@@ -1,153 +1,24 @@
 ---
-id: filtering-query-results
-title: Filtering Query Results
-sidebar_label: Filtering Query Results
+id: graphqlize-update-3
+title: GraphQLize Update (#3) - Logical Operators & Filter by nested objects.
+author: Tamizhvendan S
+author_title: Author, GraphQLize
+author_url: https://github.com/tamizhvendan
+author_image_url: https://avatars1.githubusercontent.com/u/1128916?v=4
+tags: [announcement, clojure, java, graphql, postgres, mysql, scala, kotlin]
 ---
 
-You can filter the query results in GraphQLize using the `where` argument. 
+Hello World, 
 
-## Comparison Operators
+The third iteration of [GraphQLize](https://www.graphqlize.org) went well as planned the filters in GraphQLize just got better :). 
 
-### Equal To, Not Equal To
+Let's take a peek at what's new in GraphQLize and what is in the pipeline for the next two weeks.
 
-```graphql
-query {
-  # highlight-next-line
-  cities(where: {cityId: {eq: 3}}) {
-    city
-  }
-}
-```
-
-```graphql
-query {
-  # highlight-next-line
-  languages(where: {name: {neq: "English"}}) {
-    name
-  }
-}
-```
-
-### Greater Than, Greater Than Or Equal To
-
-```graphql
-query {
-  # highlight-next-line
-  payments(where: {amount: {gt: 11.99}}) {
-    rentalId
-    amount
-  }
-}
-```
-```graphql
-query {
-  # highlight-next-line
-  payments(where: {amount: {gte: 11.99}}) {
-    rentalId
-    amount
-  }
-}
-```
-### Less Than, Less Than Or Equal To
-
-```graphql
-query {
-  # highlight-next-line
-  payments(where: {amount: {lt: 6.99}}) {
-    rentalId
-    amount
-  }
-}
-```
-
-```graphql
-query {
-  # highlight-next-line
-  payments(where: {amount: {lte: 6.99}}) {
-    rentalId
-    amount
-  }
-}
-```
-
-### Between
-
-```graphql
-query {
-  # highlight-next-line
-  payments(where: {paymentDate: {between: {from: "2005-08-23T21:00:00", to: "2005-08-23T21:03:00"}}}) {
-    rentalId
-  }
-}
-```
-
-### Is Null, Is Not Null
-
-```graphql
-query {
-  # highlight-next-line
-  employees(where: {employeeReportsToId: {isNull: true}}) {
-    firstName
-    lastName
-  }
-}
-```
-
-```graphql
-query {
-  # highlight-next-line
-  employees(where: {employeeReportsToId: {isNotNull: true}}) {
-    firstName
-    lastName
-  }
-}
-```
-
-### IN, NOT IN
-
-```graphql
-query {
-  # highlight-next-line
-  payments(where: {customerId: {in: [1, 2]}}) {
-    paymentId
-    amount
-  }
-}
-```
-
-```graphql
-query {
-  # highlight-next-line
-  payments(where: {customerId: {notIn: [1, 2]}}) {
-    paymentId
-    amount
-  }
-}
-```
-
-### String Comparison
-
-#### Like
-
-```graphql
-query {
-  # highlight-next-line
-  countries(where: {country: {like: "A%"}}) {
-    country
-  }
-}
-```
-#### Not Like
-```graphql
-query {
-  # highlight-next-line
-  countries(where: {country: {notLike: "A%"}}) {
-    country
-  }
-}
-```
+<!--truncate-->
 
 ## Logical Operators
+
+Now we can use logical operators `and`, `or` and `not` in the filters.
 
 ### AND
 
@@ -209,13 +80,13 @@ query {
 
 ## Filter by nested object(s)
 
-We can filter the resulting objects based on the fields of a nested object(s).
+Another major feature that was added during the last iteration is filtering the resulting objects based on the fields of a nested object(s).
 
 ### One to One
 
 ![](/img/address_city_country_er_diagram.png)
 
-For example, to get all the cities of a county using the country' name in the above schema, We can query it as 
+For example, to get all the cities of a county using the country's name in the above schema, We can query it as 
 
 ```graphql
 query {
@@ -321,33 +192,16 @@ query {
 
 > The `have` parameter is available only in the `one-to-many` and `many-to-many` relationship fields
 
-## Filtering nested objects
 
-GraphQLize also supports filtering nested objects. 
+## What's Next?
 
-```graphql
-query {
-  countryByCountryId(countryId: 2) {
-    country
-    # filter one-to-many relationship
-    # highlight-next-line
-    cities(where: {city: {like: "B%"}}) {
-      cityId
-      city
-    }
-  }
-}
-```
+The focus of the next iteration of GraphQLize is adding support for SQL aggregate functions. 
 
-```graphql
-query {
-  actorByActorId(actorId: 148) {
-    firstName
-    # filter many-to-many relationship
-    # highlight-next-line
-    films(where: {title: {like: "S%"}}) {
-      title
-    }
-  }
-}
-```
+You can keep track of the progress by
+
+- Following the [GraphQLize Twitter account](https://twitter.com/graphqlize)
+- Joining [GraphQLize's Discord](https://discord.gg/akkdPqf)
+- Subscribing to [GraphQLize's newsletter](https://tinyletter.com/graphqlize-org)
+
+Cheers,  
+Tamizh
