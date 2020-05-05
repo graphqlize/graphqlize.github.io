@@ -4,10 +4,17 @@
         <title>GraphQLize Blog</title>
         <link>https://www.graphqlize.org/blog</link>
         <description>GraphQLize Blog</description>
-        <lastBuildDate>Mon, 20 Apr 2020 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 05 May 2020 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <copyright>Copyright © 2020 GraphQLize.</copyright>
+        <item>
+            <title><![CDATA[GraphQLize Update (#3) - Logical Operators & Filter by nested objects.]]></title>
+            <link>https://www.graphqlize.org/blog/graphqlize-update-3</link>
+            <guid>graphqlize-update-3</guid>
+            <pubDate>Tue, 05 May 2020 00:00:00 GMT</pubDate>
+            <description><![CDATA[Hello World, ]]></description>
+        </item>
         <item>
             <title><![CDATA[GraphQLize Update (#2) - Supports Sorting, Filtering & MySQL Boolean Types]]></title>
             <link>https://www.graphqlize.org/blog/graphqlize-update-2</link>
