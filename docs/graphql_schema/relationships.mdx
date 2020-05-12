@@ -197,3 +197,70 @@ type Actor {
   filmActors: [FilmActor]!
 }
 ```
+
+## Foreign Key Without the Id Suffix
+
+If the foreign key in question doesn't have the id suffix `_id`, then the GraphQLize follows a different approach to name the fields.
+
+Say, we have a below schema
+
+<Tabs
+  defaultValue="postgres"
+  values={[
+    { label: 'Postgres', value: 'postgres' },
+    { label: 'MySQL', value: 'mysql' }
+  ]
+}>
+<TabItem value="postgres">
+
+```sql
+CREATE TABLE continent (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL
+);
+CREATE TABLE country (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  continent_identifier int REFERENCES continent(id)
+);
+```
+
+</TabItem>
+<TabItem value="mysql">
+
+```sql
+CREATE TABLE continent (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name TEXT NOT NULL
+);
+CREATE TABLE country (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name TEXT NOT NULL,
+  continent_identifier INT NOT NULL,
+  CONSTRAINT `fk_continent_country` FOREIGN KEY (`continent_identifier`) REFERENCES `continent` (`id`)
+);
+```
+
+</TabItem>
+
+</Tabs>
+
+The `continent_identifier` column doesn't have the foreign key suffix (`_id`). 
+
+For the `one-to-one` relationship, GraphQLize creates a field with the name `continentByContinentIdentifer`. The convention is `{targetTableName}By{FKeyColumnNameInPascalCase}`.
+
+```graphql
+type Country {
+  # ...
+  continentByContinentIdentifer : Continent!
+}
+```
+
+On the `one-to-many` side, the field name is the concatenation of the *camelCase* version of the foreign key column name (`continentIdentifer`) with the pluralized form of the target table (`Countries`).
+
+```graphql
+type Continent {
+  # ...
+  continentIdentiferCountries: [Country]!
+}
+```
