@@ -4,10 +4,17 @@
         <title>GraphQLize Blog</title>
         <link>https://www.graphqlize.org/blog</link>
         <description>GraphQLize Blog</description>
-        <lastBuildDate>Tue, 05 May 2020 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 20 May 2020 15:22:26 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <copyright>Copyright © 2020 GraphQLize.</copyright>
+        <item>
+            <title><![CDATA[GraphQLize Update (#4) - Aggregate Functions & Group By.]]></title>
+            <link>https://www.graphqlize.org/blog/graphqlize-update-4</link>
+            <guid>graphqlize-update-4</guid>
+            <pubDate>Wed, 20 May 2020 15:22:26 GMT</pubDate>
+            <description><![CDATA[Hello World,]]></description>
+        </item>
         <item>
             <title><![CDATA[GraphQLize Update (#3) - Logical Operators & Filter by nested objects.]]></title>
             <link>https://www.graphqlize.org/blog/graphqlize-update-3</link>
