@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[34],{138:function(n){n.exports=JSON.parse('{"allTagsPath":"/blog/tags","slug":"kotlin","name":"kotlin","count":3,"permalink":"/blog/tags/kotlin"}')}}]);
