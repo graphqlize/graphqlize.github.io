@@ -41,7 +41,7 @@ Here are some of the examples.
 
 By default, GraphQLize assumes `_id` as the suffix for foreign keys in both Postgres and MySQL.
 
-[In future](https://github.com/graphqlize/graphqlize/issues/4), GraphQLize will provide a configuration to override this default behaviour.
+[In future](https://github.com/graphqlize/graphqlize/issues/4), GraphQLize will provide a configuration to override this default behavior.
 
 ## One to Many
 
@@ -163,7 +163,7 @@ For the database table relationships like below,
 The `film_actor` table is an associative table as
 
 1. It has `actor_id` and `film_id` as the primary keys.
-2. The primay keys `{actor_id, film_id}` is a subset of foreign keys `{actor_id, film_id}` of the `film_actor` table. 
+2. The primary keys `{actor_id, film_id}` is a subset of foreign keys `{actor_id, film_id}` of the `film_actor` table. 
 
 In this scenario, GraphQLize creates two array fields for these two `many-to-many` relationships.  
 
@@ -200,7 +200,7 @@ type Actor {
 
 ## Foreign Key Without the Id Suffix
 
-If the foreign key in question doesn't have the id suffix `_id`, then the GraphQLize follows a different approach to name the fields.
+If the foreign key in question doesn't have the id suffix `_id`, then the GraphQLize follows a slightly different approach to name the fields.
 
 Say, we have a below schema
 
