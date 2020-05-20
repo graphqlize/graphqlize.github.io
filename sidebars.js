@@ -73,7 +73,8 @@ module.exports = {
           ]
         },
         "queries/sorting-query-results",
-        "queries/filtering-query-results"
+        "queries/filtering-query-results",
+        "queries/aggregate-queries"
       ]
     }
   ]
