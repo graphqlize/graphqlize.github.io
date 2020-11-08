@@ -19,7 +19,7 @@ module.exports = {
         alt: "GraphQLize Logo",
         src: "img/logo.svg"
       },
-      links: [
+      items: [
         { to: "docs/graphqlize/intro", label: "Docs", position: "left" },
         { to: "blog", label: "Blog", position: "left" },
         {

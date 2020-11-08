@@ -1,5 +1,5 @@
 ---
-id: announcing-graphqlize-alpha
+slug: announcing-graphqlize-alpha
 title: Announcing GraphQLize Alpha
 author: Tamizhvendan S
 author_title: Author, GraphQLize

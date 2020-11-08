@@ -1,5 +1,5 @@
 ---
-id: graphqlize-update-4
+slug: graphqlize-update-4
 title: GraphQLize Update (#4) - Aggregate Functions & Group By.
 author: Tamizhvendan S
 author_title: Author, GraphQLize
