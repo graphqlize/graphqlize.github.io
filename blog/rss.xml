@@ -4,7 +4,7 @@
         <title>GraphQLize Blog</title>
         <link>https://www.graphqlize.org/blog</link>
         <description>GraphQLize Blog</description>
-        <lastBuildDate>Wed, 20 May 2020 15:22:26 GMT</lastBuildDate>
+        <lastBuildDate>Sun, 08 Nov 2020 09:09:42 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <copyright>Copyright © 2020 GraphQLize.</copyright>
@@ -12,7 +12,7 @@
             <title><![CDATA[GraphQLize Update (#4) - Aggregate Functions & Group By.]]></title>
             <link>https://www.graphqlize.org/blog/graphqlize-update-4</link>
             <guid>graphqlize-update-4</guid>
-            <pubDate>Wed, 20 May 2020 15:22:26 GMT</pubDate>
+            <pubDate>Sun, 08 Nov 2020 09:09:42 GMT</pubDate>
             <description><![CDATA[Hello World,]]></description>
         </item>
         <item>

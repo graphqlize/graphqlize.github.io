@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[38],{141:function(s){s.exports=JSON.parse('{"allTagsPath":"/blog/tags","slug":"mysql","name":"mysql","count":5,"permalink":"/blog/tags/mysql"}')}}]);

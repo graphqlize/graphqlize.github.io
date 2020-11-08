@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[27],{90:function(a){a.exports=JSON.parse('{"allTagsPath":"/blog/tags","slug":"scala","name":"scala","count":4,"permalink":"/blog/tags/scala"}')}}]);
