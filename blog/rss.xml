@@ -7,7 +7,7 @@
         <lastBuildDate>Sun, 08 Nov 2020 09:09:42 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
-        <copyright>Copyright © 2020 GraphQLize.</copyright>
+        <copyright>Copyright © 2021 GraphQLize.</copyright>
         <item>
             <title><![CDATA[GraphQLize Update (#4) - Aggregate Functions & Group By.]]></title>
             <link>https://www.graphqlize.org/blog/graphqlize-update-4</link>
